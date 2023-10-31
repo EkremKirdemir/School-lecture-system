@@ -16,7 +16,7 @@ namespace yazlab
         {
             InitializeComponent();
         }
-        public bool VerifyLogin(string role,string username,string password)
+        public bool VerifyLogin(string role, string username, string password)
         {
             if (username == "" && password == "")
             {
@@ -24,11 +24,13 @@ namespace yazlab
                 {
                     teacherUserControl1.Visible = false;
                     studentUserControl1.Visible = true;
+                    adminUserControl1.Visible = false;
                 }
                 else if (role == "teacher")
                 {
                     teacherUserControl1.Visible = true;
                     studentUserControl1.Visible = false;
+                    adminUserControl1.Visible = false;
                 }
                 else if (role == "admin")
                 {
@@ -58,12 +60,17 @@ namespace yazlab
             if (VerifyLogin(role, username, password))
             {
                 MessageBox.Show("Login successful!");
-                
+
             }
             else
             {
                 MessageBox.Show("Login failed. Please check your credentials.");
             }
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
         }
     }
