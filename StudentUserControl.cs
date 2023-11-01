@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Npgsql;
+using NpgsqlTypes;
 using Spire.Pdf;
 using Spire.Pdf.Exporting.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Globalization;
 
 namespace yazlab
 {
@@ -23,7 +31,8 @@ namespace yazlab
         {
 
         }
-
+        NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab1; User Id=postgres; Password=1822;");
+        List<double> gpaList = new List<double>();
         List<CourseData> SplitTranscript(string text)
         {
             List<CourseData> courseData = new List<CourseData>();
@@ -31,6 +40,16 @@ namespace yazlab
             string[] splittedLines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             for (int i = 0; i < splittedLines.Length; i++)
             {
+                if (splittedLines[i].Trim().StartsWith("DNO"))
+                {
+                    MatchCollection matches = Regex.Matches(splittedLines[i], @"GNO:(\d+(\.\d+)?)");
+                    //gpaList.Add(matches[matches.Count - 1].ToString().Substring(4));
+                    if (matches.Count > 0)
+                    {
+                        gpaList.Add(Double.Parse(matches[matches.Count - 1].ToString().Substring(4), CultureInfo.InvariantCulture));
+                    }
+ 
+                }
                 if (splittedLines[i].EndsWith("(Comment)"))
                 {
                     int x = i + 1;
@@ -89,12 +108,57 @@ namespace yazlab
                 {
                     listBox1.Items.Add(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
                     Console.WriteLine(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
+                    var jsonCourse = new
+                    {
+                        Code = course.CourseCode,
+                        Name = course.CourseName,
+                        Credit = course.CourseCredit
+                    };
+                    baglanti.Open();
+
+                    // Fetch the existing JSON data from the database
+                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=4";
+
+                    using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+                    {
+                        string existingJsonData = selectCommand.ExecuteScalar() as string;
+
+                        if (existingJsonData == null)
+                        {
+                            // If the column is empty, set the JSON string directly
+                            existingJsonData = "[]";
+                        }
+
+                        // Deserialize the existing JSON data
+                        var existingData = JsonSerializer.Deserialize<List<dynamic>>(existingJsonData);
+
+                        // Append the new JSON data to the existing data
+                        existingData.Add(jsonCourse);
+
+                        // Serialize the updated data
+                        string updatedJsonStr = JsonSerializer.Serialize(existingData);
+                        double gpa = gpaList[gpaList.Count-1];
+                        // Update the row with the updated JSON data
+                        string sqlUpdate = "UPDATE students SET transcript = @updated_json,gpa = @gpa WHERE student_id=4 AND transcript IS NULL";
+
+                        using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
+                        {
+                            updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
+                            updateCommand.Parameters["@updated_json"].Value = updatedJsonStr;
+                          //  updateCommand.Parameters["@gpa"].Value= gpa;
+                            updateCommand.Parameters.AddWithValue("@gpa", gpa);
+
+
+                            updateCommand.ExecuteNonQuery();
+                            baglanti.Close();
+                        }
+                    }
                 }
             }
-        }
 
+        }
         private void usTranscript_Click(object sender, EventArgs e)
-        { 
+        {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Title = "Open File";
@@ -102,6 +166,7 @@ namespace yazlab
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+
                     string selectedFilePath = openFileDialog.FileName;
                     listBox1.Items.Clear();
                     listBox1.Visible = true;
@@ -119,18 +184,19 @@ namespace yazlab
         private void sdCourses_Click(object sender, EventArgs e)
         {
             checkedListBox1.Visible = true;
-            
+
         }
 
         private void Delete_Click(object sender, EventArgs e)
         {
-            for(int i = checkedListBox1.Items.Count - 1; i >= 0; i--){
+            for (int i = checkedListBox1.Items.Count - 1; i >= 0; i--)
+            {
                 if (checkedListBox1.GetItemChecked(i))
                 {
                     checkedListBox1.Items.RemoveAt(i);
                 }
             }
-            
+
         }
 
         private void add_Click(object sender, EventArgs e)
