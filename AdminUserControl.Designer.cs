@@ -80,7 +80,7 @@ namespace yazlab
             button1.TabIndex = 0;
             button1.Text = "Add Teacher";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button10_Click;
+            button1.Click += button1_Click;
             // 
             // label1
             // 
@@ -306,6 +306,7 @@ namespace yazlab
             button10.TabIndex = 0;
             button10.Text = "Add Lesson";
             button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click;
             // 
             // label17
             // 
