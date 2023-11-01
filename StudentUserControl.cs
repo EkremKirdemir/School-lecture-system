@@ -31,8 +31,6 @@ namespace yazlab
         {
 
         }
-        NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab1; User Id=postgres; Password=1822;");
-        List<double> gpaList = new List<double>();
         NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<double> gpaList = new List<double>();
         List<CourseData> SplitTranscript(string text)
@@ -121,7 +119,6 @@ namespace yazlab
                     // Fetch the existing JSON data from the database
                     string sqlSelect = "SELECT transcript FROM students WHERE student_id=4";
                     // Fetch the existing JSON data from the database
-                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=3";
 
                     using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
                     {
@@ -144,12 +141,7 @@ namespace yazlab
                         double gpa = gpaList[gpaList.Count-1];
                         // Update the row with the updated JSON data
                         string sqlUpdate = "UPDATE students SET transcript = @updated_json,gpa = @gpa WHERE student_id=3 AND transcript IS NULL";
-                        // Serialize the updated data
-                        string updatedJsonStr = JsonSerializer.Serialize(existingData);
-                        double gpa = gpaList[gpaList.Count-1];
-                        // Update the row with the updated JSON data
-                        string sqlUpdate = "UPDATE students SET transcript = @updated_json,gpa = @gpa WHERE student_id=4 AND transcript IS NULL";
-
+                      
                         using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
                         {
                             updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
