@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Npgsql;
+using NpgsqlTypes;
 using Spire.Pdf;
 using Spire.Pdf.Exporting.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace yazlab
 {
@@ -23,7 +29,7 @@ namespace yazlab
         {
 
         }
-
+        NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<CourseData> SplitTranscript(string text)
         {
             List<CourseData> courseData = new List<CourseData>();
@@ -89,10 +95,58 @@ namespace yazlab
                 {
                     listBox1.Items.Add(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
                     Console.WriteLine(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
+                    var jsonCourse = new
+                    {
+                        Code = course.CourseCode,
+                        Name = course.CourseName,
+                        Credit = course.CourseCredit
+                    };
+                     baglanti.Open();
+
+                        // Fetch the existing JSON data from the database
+                        string sqlSelect = "SELECT transcript FROM students WHERE student_id=3";
+
+                        using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+                        {
+                            string existingJsonData = selectCommand.ExecuteScalar() as string;
+
+                            if (existingJsonData == null)
+                            {
+                                // If the column is empty, set the JSON string directly
+                                existingJsonData = "[]";
+                            }
+
+                            // Deserialize the existing JSON data
+                            var existingData = JsonSerializer.Deserialize<List<dynamic>>(existingJsonData);
+
+                            // Append the new JSON data to the existing data
+                            existingData.Add(jsonCourse);
+
+                            // Serialize the updated data
+                            string updatedJsonStr = JsonSerializer.Serialize(existingData);
+
+                            // Update the row with the updated JSON data
+                            string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=2";
+
+                            using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti ))
+                            {
+                                updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
+                                updateCommand.Parameters["@updated_json"].Value = updatedJsonStr;
+
+                                updateCommand.ExecuteNonQuery();
+                            baglanti.Close();
+                            }
+                        }
+                    
+
+
+
+
+
+
                 }
             }
         }
-
         private void usTranscript_Click(object sender, EventArgs e)
         { 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -102,6 +156,7 @@ namespace yazlab
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    
                     string selectedFilePath = openFileDialog.FileName;
                     listBox1.Items.Clear();
                     listBox1.Visible = true;
