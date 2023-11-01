@@ -111,7 +111,7 @@ namespace yazlab
             comboBox3.DisplayMember = "FullName";
             comboBox3.ValueMember = "student_id";
             comboBox3.DataSource = studentDt;
-            baglanti.Open();
+            
             // Add the new item "New Teacher" directly to comboBox2
             DataTable dataTab = (DataTable)comboBox2.DataSource;
             DataRow newRow = dataTab.NewRow();
@@ -123,10 +123,10 @@ namespace yazlab
             DataRow newRow1 = dataTab1.NewRow();
             newRow1["FullName"] = "New Student";
             newRow1["student_id"] = -1; // Replace with a unique ID for the new item
+            
             dataTab1.Rows.InsertAt(newRow1, 0);
             comboBox3.DataSource = dataTab1;// You can specify the position where you want to insert it
 
-            baglanti.Close();
         }
 
 
@@ -288,7 +288,7 @@ namespace yazlab
             {
 
                 int studentId = (int)comboBox3.SelectedValue;
-
+                baglanti.Open();
                 using (NpgsqlCommand command = new NpgsqlCommand("SELECT username, name, surname,  password FROM students WHERE student_id = @studentId", baglanti))
                 {
 
@@ -308,6 +308,7 @@ namespace yazlab
                         }
                     }
                 }
+                baglanti.Close();
             }
         }
 
@@ -330,8 +331,8 @@ namespace yazlab
                 {
 
                     command.Parameters.AddWithValue("@identificationNumber", identificationNumber);
-                    if (baglanti.State == ConnectionState.Closed)
-                        baglanti.Open();
+                    
+                    baglanti.Open();
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -347,6 +348,7 @@ namespace yazlab
                             // Veri bulunamadıysa yapılacak işlemleri buraya ekleyebilirsiniz.
                         }
                     }
+                    baglanti.Close();
                 }
             }
 

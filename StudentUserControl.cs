@@ -48,7 +48,7 @@ namespace yazlab
                     {
                         gpaList.Add(Double.Parse(matches[matches.Count - 1].ToString().Substring(4), CultureInfo.InvariantCulture));
                     }
- 
+
                 }
                 if (splittedLines[i].EndsWith("(Comment)"))
                 {
@@ -63,28 +63,28 @@ namespace yazlab
                         if (a.Length > 1)
                         {
                             course.Add(a[1]);
-                            string courseName = "";
+                            string Name = "";
                             for (int j = 2; j < a.Length; j++)
                             {
                                 if (a[j] != "Z" && a[j] != "S")
                                 {
-                                    courseName += " " + a[j];
+                                    Name += " " + a[j];
                                 }
                                 else
                                 {
                                     break;
                                 }
                             }
-                            course.Add(courseName.Trim());
+                            course.Add(Name.Trim());
                             if (a.Length >= 3)
                             {
                                 course.Add(a[a.Length - 3]);
                             }
                             courseData.Add(new CourseData
                             {
-                                CourseCode = course[0],
-                                CourseName = course[1],
-                                CourseCredit = course.Count >= 3 ? course[2] : ""
+                                Code = course[0],
+                                Name = course[1],
+                                Credit = course.Count >= 3 ? course[2] : ""
                             });
                         }
                         x += 2;
@@ -103,19 +103,27 @@ namespace yazlab
             {
                 string pageText = pdfPage.ExtractText();
                 List<CourseData> courseData = SplitTranscript(pageText);
-
+                baglanti.Open();
+                double gpa = gpaList[gpaList.Count - 1];
+                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=4";
+                using (NpgsqlCommand updateCommand = new NpgsqlCommand(gpaUpdate, baglanti))
+                {
+                    updateCommand.Parameters.AddWithValue("@gpa", gpa);
+                    updateCommand.ExecuteNonQuery();
+                }
+                baglanti.Close();
                 foreach (CourseData course in courseData)
                 {
-                    listBox1.Items.Add(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
-                    Console.WriteLine(course.CourseCode + "   " + course.CourseName + "   " + course.CourseCredit);
+                    listBox1.Items.Add(course.Code + "   " + course.Name + "   " + course.Credit);
+                    Console.WriteLine(course.Code + "   " + course.Name + "   " + course.Credit);
                     var jsonCourse = new
                     {
-                        Code = course.CourseCode,
-                        Name = course.CourseName,
-                        Credit = course.CourseCredit
+                        Code = course.Code,
+                        Name = course.Name,
+                        Credit = course.Credit
                     };
                     baglanti.Open();
-
+                    
                     // Fetch the existing JSON data from the database
                     string sqlSelect = "SELECT transcript FROM students WHERE student_id=4";
                     // Fetch the existing JSON data from the database
@@ -138,21 +146,17 @@ namespace yazlab
 
                         // Serialize the updated data
                         string updatedJsonStr = JsonSerializer.Serialize(existingData);
-                        double gpa = gpaList[gpaList.Count-1];
+                        
                         // Update the row with the updated JSON data
-                        string sqlUpdate = "UPDATE students SET transcript = @updated_json,gpa = @gpa WHERE student_id=3 AND transcript IS NULL";
-                      
+                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=4 ";
+
                         using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
                         {
                             updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
                             updateCommand.Parameters["@updated_json"].Value = updatedJsonStr;
-                          //  updateCommand.Parameters["@gpa"].Value= gpa;
-                            updateCommand.Parameters.AddWithValue("@gpa", gpa);
-
-
                             updateCommand.ExecuteNonQuery();
+                        }            
                             baglanti.Close();
-                        }
                     }
                 }
             }
@@ -208,8 +212,8 @@ namespace yazlab
 
     public class CourseData
     {
-        public string CourseCode { get; set; }
-        public string CourseName { get; set; }
-        public string CourseCredit { get; set; }
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string Credit { get; set; }
     }
 }

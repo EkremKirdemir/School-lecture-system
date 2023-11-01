@@ -38,6 +38,10 @@ namespace yazlab
             sdCourses = new System.Windows.Forms.Button();
             add = new System.Windows.Forms.Button();
             Delete = new System.Windows.Forms.Button();
+            sendButton = new System.Windows.Forms.Button();
+            messageTextBox = new System.Windows.Forms.TextBox();
+            messagesListBox = new System.Windows.Forms.ListBox();
+            messagesComboBox = new System.Windows.Forms.ComboBox();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -121,11 +125,48 @@ namespace yazlab
             Delete.UseVisualStyleBackColor = true;
             Delete.Click += Delete_Click;
             // 
+            // sendButton
+            // 
+            sendButton.Location = new System.Drawing.Point(685, 255);
+            sendButton.Name = "sendButton";
+            sendButton.Size = new System.Drawing.Size(75, 23);
+            sendButton.TabIndex = 8;
+            sendButton.Text = "Send";
+            sendButton.UseVisualStyleBackColor = true;
+            // 
+            // messageTextBox
+            // 
+            messageTextBox.Location = new System.Drawing.Point(552, 255);
+            messageTextBox.Name = "messageTextBox";
+            messageTextBox.Size = new System.Drawing.Size(127, 23);
+            messageTextBox.TabIndex = 9;
+            // 
+            // messagesListBox
+            // 
+            messagesListBox.FormattingEnabled = true;
+            messagesListBox.ItemHeight = 15;
+            messagesListBox.Location = new System.Drawing.Point(552, 60);
+            messagesListBox.Name = "messagesListBox";
+            messagesListBox.Size = new System.Drawing.Size(208, 184);
+            messagesListBox.TabIndex = 10;
+            // 
+            // messagesComboBox
+            // 
+            messagesComboBox.FormattingEnabled = true;
+            messagesComboBox.Location = new System.Drawing.Point(552, 20);
+            messagesComboBox.Name = "messagesComboBox";
+            messagesComboBox.Size = new System.Drawing.Size(208, 23);
+            messagesComboBox.TabIndex = 11;
+            // 
             // StudentUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(messagesComboBox);
+            Controls.Add(messagesListBox);
+            Controls.Add(messageTextBox);
+            Controls.Add(sendButton);
             Controls.Add(Delete);
             Controls.Add(add);
             Controls.Add(sdCourses);
@@ -152,5 +193,9 @@ namespace yazlab
         private System.Windows.Forms.Button sdCourses;
         private System.Windows.Forms.Button add;
         private System.Windows.Forms.Button Delete;
+        private System.Windows.Forms.Button sendButton;
+        private System.Windows.Forms.TextBox messageTextBox;
+        private System.Windows.Forms.ListBox messagesListBox;
+        private System.Windows.Forms.ComboBox messagesComboBox;
     }
 }
