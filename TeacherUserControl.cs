@@ -184,23 +184,18 @@ namespace yazlab
                 return;
             }
 
-            // Get student ids with non-null transcripts
             List<int> studentIds = GetStudentIdsWithNonNullTranscripts();
-            ranks.Clear(); // Clear the previous ranks, if you want to start fresh each time this is run
+            ranks.Clear();
 
-            // Loop through each student ID
             foreach (int id in studentIds)
             {
                 double sumOfMultipliedMatches = 0;
                 bool allCriteriaMatched = true;
 
-                // Fetch course data for the student
                 List<CourseData> studentCourses = FetchCourseData(id);
 
-                // Loop through each criteria
                 foreach (var criteria in criterias)
                 {
-                    // Find if there is a matching course for the criteria
                     CourseData matchingCourse = studentCourses.FirstOrDefault(course => course.Name == criteria.Name);
 
                     if (matchingCourse != null)
@@ -248,13 +243,11 @@ namespace yazlab
                     }
                     else
                     {
-                        // If any criteria do not match, mark it and break out of the loop
                         allCriteriaMatched = false;
                         break;
                     }
                 }
 
-                // If all criteria matched for the student, create a Rank object and add it to the ranks list
                 if (allCriteriaMatched)
                 {
                     Rank rank = new Rank
@@ -265,9 +258,6 @@ namespace yazlab
                     ranks.Add(rank);
                 }
             }
-
-            // If you need to do something with the ranks list (like updating the UI), do it here
-
             MessageBox.Show("Ranking complete.");
             baglanti.Open();
             if (ranks.Count > 1)
@@ -366,7 +356,7 @@ namespace yazlab
         public void messagesListBoxUpdate()
         {
             int targetStudentId = (int)messageComboBox.SelectedValue;
-            int identificationNumber = 3; // Student ID to filter messages
+            int identificationNumber = 3;
 
             string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
@@ -380,7 +370,6 @@ namespace yazlab
 
                 var messages = JsonSerializer.Deserialize<List<Content>>(existingJsonData);
 
-                // Clearing the ListBox for the new set of items
                 messageListBox.Items.Clear();
 
                 foreach (var message in messages)
@@ -390,12 +379,10 @@ namespace yazlab
                         string senderName = "";
                         if (message.Sent == 0)
                         {
-                            // Message is from a student
                             senderName = GetNameSurname("students", "student_id", message.StudentId);
                         }
                         else
                         {
-                            // Message is from a teacher
                             senderName = GetNameSurname("teachers", "identification_number", identificationNumber);
                         }
 
@@ -440,9 +427,9 @@ namespace yazlab
 
             var newMessage = new
             {
-                StudentId = 48, // You might want to replace this with an actual dynamic value
+                StudentId = 48,
                 Message = messagesTextBox.Text.Trim(),
-                Sent = 1 // I assume you want to store the date and time when the message was sent
+                Sent = 1
             };
 
             baglanti.Open();

@@ -213,7 +213,7 @@ namespace yazlab
         public void messagesListBoxUpdate()
         {
             int identificationNumber = (int)messagesComboBox.SelectedValue;
-            int targetStudentId = 48; // Student ID to filter messages
+            int targetStudentId = 48;
 
             string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
@@ -227,7 +227,6 @@ namespace yazlab
 
                 var messages = JsonSerializer.Deserialize<List<Content>>(existingJsonData);
 
-                // Clearing the ListBox for the new set of items
                 messagesListBox.Items.Clear();
 
                 foreach (var message in messages)
@@ -237,12 +236,10 @@ namespace yazlab
                         string senderName = "";
                         if (message.Sent == 0)
                         {
-                            // Message is from a student
                             senderName = GetNameSurname("students", "student_id", message.StudentId);
                         }
                         else
                         {
-                            // Message is from a teacher
                             senderName = GetNameSurname("teachers", "identification_number", identificationNumber);
                         }
 
@@ -287,9 +284,9 @@ namespace yazlab
 
             var newMessage = new
             {
-                StudentId = 48, // You might want to replace this with an actual dynamic value
+                StudentId = 48,
                 Message = messageTextBox.Text.Trim(),
-                Sent = 0 // I assume you want to store the date and time when the message was sent
+                Sent = 0 
             };
 
             baglanti.Open();
@@ -332,6 +329,5 @@ namespace yazlab
         public int StudentId { get; set; }
         public string Message { get; set; }
         public int Sent { get; set; }
-        // Include any other properties that match your JSON structure
     }
 }
