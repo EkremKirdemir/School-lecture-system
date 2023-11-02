@@ -20,12 +20,6 @@ namespace yazlab
             comboBoxUpdate();
 
         }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
 
@@ -56,12 +50,6 @@ namespace yazlab
             comboBoxUpdate();
 
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button6_Click(object sender, EventArgs e)
         {
 
@@ -74,12 +62,6 @@ namespace yazlab
             baglanti.Close();
 
             comboBoxUpdate();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            comboBoxUpdate();
-
         }
         void comboBoxUpdate()
         {
@@ -147,11 +129,6 @@ namespace yazlab
             comboBoxUpdate();
 
         }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
         public string GetExistingLecturesJson(int teacherId, NpgsqlConnection connection)
         {
             string existingLecturesJson = null;
@@ -202,12 +179,6 @@ namespace yazlab
 
 
         }
-
-        private void label16_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button5_Click(object sender, EventArgs e)
         {
             baglanti.Open();
@@ -225,11 +196,6 @@ namespace yazlab
             baglanti.Close();
 
             comboBoxUpdate();
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
 
         }
 
