@@ -224,6 +224,7 @@ namespace yazlab
             buttonAcceptCriterias.TabIndex = 5;
             buttonAcceptCriterias.Text = "Accept Criterias";
             buttonAcceptCriterias.UseVisualStyleBackColor = true;
+            buttonAcceptCriterias.Click += buttonAcceptCriterias_Click;
             // 
             // listBoxCriteria
             // 

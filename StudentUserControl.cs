@@ -192,7 +192,6 @@ namespace yazlab
                     checkedListBox1.Items.RemoveAt(i);
                 }
             }
-
         }
 
         private void add_Click(object sender, EventArgs e)

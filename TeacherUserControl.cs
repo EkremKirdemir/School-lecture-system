@@ -29,6 +29,7 @@ namespace yazlab
         NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<CourseData> courses = new List<CourseData>();
         List<Criteria> criterias = new List<Criteria>();
+        List<Rank> ranks = new List<Rank>();
         void comboBoxUpdate()
         {
             baglanti.Open();
@@ -51,7 +52,7 @@ namespace yazlab
             {
                 var studentCourses = FetchCourseData(id);
                 foreach (var course in studentCourses)
-                {     
+                {
                     if (!courses.Any(c => c.Code == course.Code))
                     {
                         courses.Add(course);
@@ -59,7 +60,6 @@ namespace yazlab
                     }
                 }
             }
-
 
         }
         public List<int> GetStudentIdsWithNonNullTranscripts()
@@ -85,7 +85,6 @@ namespace yazlab
         public List<CourseData> FetchCourseData(int studentId)
         {
             List<CourseData> courses = new List<CourseData>();
-
 
             baglanti.Open();
             try
@@ -113,8 +112,6 @@ namespace yazlab
             }
 
             baglanti.Close();
-
-
             return courses;
         }
         private void studentsComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -166,6 +163,100 @@ namespace yazlab
             }
         }
 
+        private void buttonAcceptCriterias_Click(object sender, EventArgs e)
+        {
+            if (criterias.Count == 0)
+            {
+                MessageBox.Show("No criteria have been added.");
+                return;
+            }
+
+            // Get student ids with non-null transcripts
+            List<int> studentIds = GetStudentIdsWithNonNullTranscripts();
+            ranks.Clear(); // Clear the previous ranks, if you want to start fresh each time this is run
+
+            // Loop through each student ID
+            foreach (int id in studentIds)
+            {
+                double sumOfMultipliedMatches = 0;
+                bool allCriteriaMatched = true;
+
+                // Fetch course data for the student
+                List<CourseData> studentCourses = FetchCourseData(id);
+
+                // Loop through each criteria
+                foreach (var criteria in criterias)
+                {
+                    // Find if there is a matching course for the criteria
+                    CourseData matchingCourse = studentCourses.FirstOrDefault(course => course.Name == criteria.Name);
+
+                    if (matchingCourse != null)
+                    {
+                        double grade;
+                        switch(matchingCourse.Credit)
+                        {
+                            case "AA":
+                                grade = 4.0;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "BA":
+                                grade = 3.5;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "BB":
+                                grade = 3.0;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "CB":
+                                grade = 2.5;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "CC":
+                                grade = 2.0;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "DC":
+                                grade = 1.5;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "DD":
+                                grade = 1.0;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "FD":
+                                grade = 0.5;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                            case "FF":
+                                grade = 0.0;
+                                sumOfMultipliedMatches += criteria.Value * grade;
+                                break;
+                        }                     
+                    }
+                    else
+                    {
+                        // If any criteria do not match, mark it and break out of the loop
+                        allCriteriaMatched = false;
+                        break;
+                    }
+                }
+
+                // If all criteria matched for the student, create a Rank object and add it to the ranks list
+                if (allCriteriaMatched)
+                {
+                    Rank rank = new Rank
+                    {
+                        id = id,
+                        Value = sumOfMultipliedMatches
+                    };
+                    ranks.Add(rank);
+                }
+            }
+
+            // If you need to do something with the ranks list (like updating the UI), do it here
+
+            MessageBox.Show("Ranking complete.");
+        }
         private void buttonInterest_Click(object sender, EventArgs e)
         {
             if (textBoxInterest.Text != "")
@@ -199,11 +290,14 @@ namespace yazlab
                 baglanti.Open();
                 komut1.ExecuteNonQuery();
                 baglanti.Close();
-
-
-
             }
         }
+
+    }
+    public class Rank
+    {
+        public int id { get; set; }
+        public double Value { get; set; }
     }
     public class Criteria
     {
