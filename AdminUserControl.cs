@@ -30,7 +30,7 @@ namespace yazlab
         {
 
             baglanti.Open();
-            int studentIdToDelete = (int)comboBox3.SelectedValue; // silmek istediğiniz öğretmenin kimliğini belirtmelisiniz.
+            int studentIdToDelete = (int)comboBox3.SelectedValue;
 
             NpgsqlCommand komut1 = new NpgsqlCommand("DELETE FROM students WHERE student_id = @studentId", baglanti);
             komut1.Parameters.AddWithValue("@studentId", studentIdToDelete);
@@ -66,7 +66,7 @@ namespace yazlab
         {
 
             baglanti.Open();
-            int teacherIdToDelete = (int)comboBox2.SelectedValue; // Silmek istediğiniz öğretmenin kimliğini belirtmelisiniz.
+            int teacherIdToDelete = (int)comboBox2.SelectedValue;
 
             NpgsqlCommand komut1 = new NpgsqlCommand("DELETE FROM teachers WHERE identification_number = @teacherId", baglanti);
             komut1.Parameters.AddWithValue("@teacherId", teacherIdToDelete);
@@ -83,7 +83,6 @@ namespace yazlab
         }
         void comboBoxUpdate()
         {
-            //comboBox2.SelectedIndex = 0;
             baglanti.Open();
 
             NpgsqlDataAdapter da = new NpgsqlDataAdapter("SELECT identification_number ||' - '||  name || ' ' || surname AS FullName, identification_number FROM teachers", baglanti);
@@ -102,7 +101,6 @@ namespace yazlab
             comboBox2.ValueMember = "identification_number";
             comboBox2.DataSource = dataTable;
 
-            //comboBox2.SelectedIndex = 0;
             baglanti.Open();
             NpgsqlDataAdapter studentDa = new NpgsqlDataAdapter("SELECT student_id ||' - '||  name || ' ' || surname AS FullName, student_id FROM students", baglanti);
             DataTable studentDt = new DataTable();
@@ -111,21 +109,20 @@ namespace yazlab
             comboBox3.DisplayMember = "FullName";
             comboBox3.ValueMember = "student_id";
             comboBox3.DataSource = studentDt;
-            
-            // Add the new item "New Teacher" directly to comboBox2
+
             DataTable dataTab = (DataTable)comboBox2.DataSource;
             DataRow newRow = dataTab.NewRow();
             newRow["FullName"] = "New Teacher";
-            newRow["identification_number"] = -1; // Replace with a unique ID for the new item
+            newRow["identification_number"] = -1;
             dataTab.Rows.InsertAt(newRow, 0);
             comboBox2.DataSource = dataTab;
             DataTable dataTab1 = (DataTable)comboBox3.DataSource;
             DataRow newRow1 = dataTab1.NewRow();
             newRow1["FullName"] = "New Student";
-            newRow1["student_id"] = -1; // Replace with a unique ID for the new item
+            newRow1["student_id"] = -1;
             
             dataTab1.Rows.InsertAt(newRow1, 0);
-            comboBox3.DataSource = dataTab1;// You can specify the position where you want to insert it
+            comboBox3.DataSource = dataTab1;
 
         }
 
@@ -161,7 +158,6 @@ namespace yazlab
             using (NpgsqlCommand command = new NpgsqlCommand("SELECT lectures FROM teachers WHERE identification_number = @teacherid", connection))
             {
                 command.Parameters.AddWithValue("teacherid", teacherId);
-                //           connection.Open();
                 using (NpgsqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -169,7 +165,6 @@ namespace yazlab
                         existingLecturesJson = reader["lectures"].ToString();
                     }
                 }
-                //     connection.Close();
             }
             return existingLecturesJson;
         }
@@ -180,28 +175,24 @@ namespace yazlab
 
             baglanti.Open();
 
-            int selectedValue = (int)comboBox1.SelectedValue; // ComboBox'tan seçilen öğenin değerini al
+            int selectedValue = (int)comboBox1.SelectedValue;
 
-            // Öncelikle mevcut JSONB verileri çekin
             string existingLecturesJson = GetExistingLecturesJson(selectedValue, baglanti);
 
             if (string.IsNullOrEmpty(existingLecturesJson))
             {
-                // Mevcut JSONB verisi null veya boşsa, yeni bir JSONB dizisi oluştur
                 existingLecturesJson = $@"[{{""Code"": ""{textBox11.Text}"", ""Name"": ""{textBox10.Text}"",""status"": ""0""}}]";
             }
             else
             {
-                // Mevcut JSONB verisi null değilse, mevcut verileri koruyarak yeni dersi eklemek için birleştir
-                existingLecturesJson = existingLecturesJson.Remove(existingLecturesJson.Length - 1) + ","; // Son "]" karakterini kaldır
+                existingLecturesJson = existingLecturesJson.Remove(existingLecturesJson.Length - 1) + ",";
                 existingLecturesJson += $@"{{""Code"": ""{textBox11.Text}"", ""Name"": ""{textBox10.Text}"",""status"": ""0""}}]";
             }
 
-            // Güncellenmiş JSONB verisini kullanarak güncelleme işlemi
             using (NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE teachers SET lectures = @jsonlectures WHERE identification_number = @teacherid", baglanti))
             {
                 komut1.Parameters.AddWithValue("jsonlectures", NpgsqlTypes.NpgsqlDbType.Jsonb, existingLecturesJson);
-                komut1.Parameters.AddWithValue("teacherid", selectedValue); // Öğretmenin kimliği burada belirtilmelidir
+                komut1.Parameters.AddWithValue("teacherid", selectedValue);
                 komut1.ExecuteNonQuery();
             }
 
@@ -219,12 +210,8 @@ namespace yazlab
 
         private void button5_Click(object sender, EventArgs e)
         {
-
-
-
-
             baglanti.Open();
-            int teacherIdToUpdate = (int)comboBox2.SelectedValue; // Güncellemek istediğiniz öğretmenin kimliğini belirtmelisiniz.
+            int teacherIdToUpdate = (int)comboBox2.SelectedValue; 
 
             NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE teachers SET name = @p1, surname = @p2, username = @p3, password = @p4, quota = @p5 WHERE identification_number = @teacherid", baglanti);
             komut1.Parameters.AddWithValue("@p1", textBox2.Text);
@@ -232,7 +219,7 @@ namespace yazlab
             komut1.Parameters.AddWithValue("@p3", textBox1.Text);
             komut1.Parameters.AddWithValue("@p4", textBox5.Text);
             komut1.Parameters.AddWithValue("@p5", int.Parse(textBox4.Text));
-            komut1.Parameters.AddWithValue("@teacherid", teacherIdToUpdate); // Güncellemek istediğiniz öğretmenin kimliği
+            komut1.Parameters.AddWithValue("@teacherid", teacherIdToUpdate);
             komut1.ExecuteNonQuery();
 
             baglanti.Close();
@@ -249,14 +236,14 @@ namespace yazlab
         private void button7_Click(object sender, EventArgs e)
         {
             baglanti.Open();
-            int studentIdToUpdate = (int)comboBox3.SelectedValue; // Güncellemek istediğiniz öğretmenin kimliğini belirtmelisiniz.
+            int studentIdToUpdate = (int)comboBox3.SelectedValue;
 
             NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE students SET name = @p1, surname = @p2, username = @p3, password = @p4 WHERE student_id = @studentId", baglanti);
             komut1.Parameters.AddWithValue("@p1", textBox7.Text);
             komut1.Parameters.AddWithValue("@p2", textBox8.Text);
             komut1.Parameters.AddWithValue("@p3", textBox6.Text);
             komut1.Parameters.AddWithValue("@p4", textBox9.Text);
-            komut1.Parameters.AddWithValue("@studentId", studentIdToUpdate); // Güncellemek istediğiniz öğretmenin kimliği
+            komut1.Parameters.AddWithValue("@studentId", studentIdToUpdate);
             komut1.ExecuteNonQuery();
 
             baglanti.Close();
@@ -304,7 +291,7 @@ namespace yazlab
                         }
                         else
                         {
-                            // Veri bulunamadıysa yapılacak işlemleri buraya ekleyebilirsiniz.
+                            
                         }
                     }
                 }
@@ -345,15 +332,12 @@ namespace yazlab
                         }
                         else
                         {
-                            // Veri bulunamadıysa yapılacak işlemleri buraya ekleyebilirsiniz.
+                            
                         }
                     }
                     baglanti.Close();
                 }
             }
-
-
-            //comboBoxUpdate();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace yazlab
                 if (splittedLines[i].Trim().StartsWith("DNO"))
                 {
                     MatchCollection matches = Regex.Matches(splittedLines[i], @"GNO:(\d+(\.\d+)?)");
-                    //gpaList.Add(matches[matches.Count - 1].ToString().Substring(4));
+
                     if (matches.Count > 0)
                     {
                         gpaList.Add(Double.Parse(matches[matches.Count - 1].ToString().Substring(4), CultureInfo.InvariantCulture));
@@ -55,7 +55,6 @@ namespace yazlab
                     int x = i + 1;
                     while (x < splittedLines.Length && !splittedLines[x].Trim().StartsWith("DNO"))
                     {
-                        //string[] a = splittedLines[x].Split(' ');
                         string[] a = System.Text.RegularExpressions.Regex.Split(splittedLines[x], @"\s+");
 
                         List<string> course = new List<string>();
@@ -123,9 +122,7 @@ namespace yazlab
                     };
                     baglanti.Open();
                     
-                    // Fetch the existing JSON data from the database
                     string sqlSelect = "SELECT transcript FROM students WHERE student_id=4";
-                    // Fetch the existing JSON data from the database
 
                     using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
                     {
@@ -133,20 +130,15 @@ namespace yazlab
 
                         if (existingJsonData == null)
                         {
-                            // If the column is empty, set the JSON string directly
                             existingJsonData = "[]";
                         }
 
-                        // Deserialize the existing JSON data
                         var existingData = JsonSerializer.Deserialize<List<dynamic>>(existingJsonData);
 
-                        // Append the new JSON data to the existing data
                         existingData.Add(jsonCourse);
 
-                        // Serialize the updated data
                         string updatedJsonStr = JsonSerializer.Serialize(existingData);
-                        
-                        // Update the row with the updated JSON data
+
                         string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=4 ";
 
                         using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
@@ -166,7 +158,7 @@ namespace yazlab
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Title = "Open File";
-                openFileDialog.Filter = "PDF (*.pdf*)|*.pdf*"; // You can specify a filter to restrict the file types allowed.
+                openFileDialog.Filter = "PDF (*.pdf*)|*.pdf*";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {

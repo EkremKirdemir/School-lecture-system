@@ -51,8 +51,7 @@ namespace yazlab
             {
                 var studentCourses = FetchCourseData(id);
                 foreach (var course in studentCourses)
-                {
-                    // Check if the course already exists in the Courses list based on Code (or any other criteria you prefer)
+                {     
                     if (!courses.Any(c => c.Code == course.Code))
                     {
                         courses.Add(course);
@@ -176,7 +175,6 @@ namespace yazlab
                     interest_area = textBoxInterest.Text
                 };
 
-                // Fetch the existing interest_areas for the teacher
                 baglanti.Open();
                 NpgsqlCommand selectCommand = new NpgsqlCommand("SELECT interest_areas FROM teachers WHERE identification_number = 1", baglanti);
                 string existingJsonData = selectCommand.ExecuteScalar() as string;
@@ -193,10 +191,8 @@ namespace yazlab
                     existingInterests = new List<Interest>();
                 }
 
-                // Add the new interest
                 existingInterests.Add(newInterest);
 
-                // Serialize and update the database
                 string updatedJsonStr = JsonSerializer.Serialize(existingInterests);
                 NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE teachers SET interest_areas = @p1 WHERE identification_number = 1", baglanti);
                 komut1.Parameters.Add(new NpgsqlParameter("@p1", NpgsqlDbType.Jsonb) { Value = updatedJsonStr });
