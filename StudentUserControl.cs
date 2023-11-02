@@ -25,6 +25,7 @@ namespace yazlab
         public StudentUserControl()
         {
             InitializeComponent();
+            messageComboboxUpdate();
         }
 
         private void StudentUserControl_Load(object sender, EventArgs e)
@@ -121,7 +122,7 @@ namespace yazlab
                         Credit = course.Credit
                     };
                     baglanti.Open();
-                    
+
                     string sqlSelect = "SELECT transcript FROM students WHERE student_id=48";
 
                     using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
@@ -146,8 +147,8 @@ namespace yazlab
                             updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
                             updateCommand.Parameters["@updated_json"].Value = updatedJsonStr;
                             updateCommand.ExecuteNonQuery();
-                        }            
-                            baglanti.Close();
+                        }
+                        baglanti.Close();
                     }
                 }
             }
@@ -198,6 +199,126 @@ namespace yazlab
         {
             checkedListBox1.Items.Add("showing demanded");
         }
+        public void messageComboboxUpdate()
+        {
+            baglanti.Open();
+            NpgsqlDataAdapter data = new NpgsqlDataAdapter("SELECT identification_number ||' - '||  name || ' ' || surname AS FullName, identification_number FROM teachers", baglanti);
+            DataTable dataTable = new DataTable();
+            data.Fill(dataTable);
+            baglanti.Close();
+            messagesComboBox.DisplayMember = "FullName";
+            messagesComboBox.ValueMember = "identification_number";
+            messagesComboBox.DataSource = dataTable;
+        }
+        public void messagesListBoxUpdate()
+        {
+            int identificationNumber = (int)messagesComboBox.SelectedValue;
+            int targetStudentId = 48; // Student ID to filter messages
+
+            string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
+
+            baglanti.Open();
+            using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelectMessages, baglanti))
+            {
+                selectCommand.Parameters.AddWithValue("@identificationNumber", identificationNumber);
+
+                var dbResult = selectCommand.ExecuteScalar();
+                var existingJsonData = dbResult != DBNull.Value ? (string)dbResult : "[]";
+
+                var messages = JsonSerializer.Deserialize<List<Content>>(existingJsonData);
+
+                // Clearing the ListBox for the new set of items
+                messagesListBox.Items.Clear();
+
+                foreach (var message in messages)
+                {
+                    if (message.StudentId == targetStudentId)
+                    {
+                        string senderName = "";
+                        if (message.Sent == 0)
+                        {
+                            // Message is from a student
+                            senderName = GetNameSurname("students", "student_id", message.StudentId);
+                        }
+                        else
+                        {
+                            // Message is from a teacher
+                            senderName = GetNameSurname("teachers", "identification_number", identificationNumber);
+                        }
+
+                        string displayText = $"{senderName}: {message.Message}";
+                        messagesListBox.Items.Add(displayText);
+                    }
+                }
+            }
+            baglanti.Close();
+        }
+        private string GetNameSurname(string tableName, string idColumn, int idValue)
+        {
+            string sqlSelectName = $"SELECT name, surname FROM {tableName} WHERE {idColumn} = @idValue";
+            using (NpgsqlCommand command = new NpgsqlCommand(sqlSelectName, baglanti))
+            {
+                command.Parameters.AddWithValue("@idValue", idValue);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return reader["name"].ToString() + " " + reader["surname"].ToString();
+                    }
+                }
+            }
+            return "Unknown";
+        }
+        private void messagesComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            messagesListBoxUpdate();
+        }
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(messageTextBox.Text))
+            {
+                MessageBox.Show("Please enter a message to send.");
+                return;
+            }
+
+            int identificationNumber = (int)messagesComboBox.SelectedValue;
+            string sqlSelect = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
+
+            var newMessage = new
+            {
+                StudentId = 48, // You might want to replace this with an actual dynamic value
+                Message = messageTextBox.Text.Trim(),
+                Sent = 0 // I assume you want to store the date and time when the message was sent
+            };
+
+            baglanti.Open();
+            using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+            {
+                selectCommand.Parameters.AddWithValue("@identificationNumber", identificationNumber);
+
+                var dbResult = selectCommand.ExecuteScalar();
+                var existingJsonData = dbResult != DBNull.Value ? (string)dbResult : "[]";
+
+                var existingMessages = JsonSerializer.Deserialize<List<dynamic>>(existingJsonData);
+
+                existingMessages.Add(newMessage);
+
+                string updatedJsonStr = JsonSerializer.Serialize(existingMessages);
+
+                string sqlUpdate = "UPDATE teachers SET sent_messages = @updated_json WHERE identification_number = @identificationNumber";
+
+                using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
+                {
+                    updateCommand.Parameters.AddWithValue("@updated_json", NpgsqlDbType.Jsonb, updatedJsonStr);
+                    updateCommand.Parameters.AddWithValue("@identificationNumber", identificationNumber);
+                    updateCommand.ExecuteNonQuery();
+                }
+            }
+            baglanti.Close();
+            messagesListBoxUpdate();
+        }
+
     }
 
     public class CourseData
@@ -205,5 +326,12 @@ namespace yazlab
         public string Code { get; set; }
         public string Name { get; set; }
         public string Credit { get; set; }
+    }
+    public class Content
+    {
+        public int StudentId { get; set; }
+        public string Message { get; set; }
+        public int Sent { get; set; }
+        // Include any other properties that match your JSON structure
     }
 }

@@ -133,6 +133,7 @@ namespace yazlab
             sendButton.TabIndex = 8;
             sendButton.Text = "Send";
             sendButton.UseVisualStyleBackColor = true;
+            sendButton.Click += sendButton_Click;
             // 
             // messageTextBox
             // 
@@ -157,6 +158,7 @@ namespace yazlab
             messagesComboBox.Name = "messagesComboBox";
             messagesComboBox.Size = new System.Drawing.Size(208, 23);
             messagesComboBox.TabIndex = 11;
+            messagesComboBox.SelectedIndexChanged += messagesComboBox_SelectedIndexChanged;
             // 
             // StudentUserControl
             // 
