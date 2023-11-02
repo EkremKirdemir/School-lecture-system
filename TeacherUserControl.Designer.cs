@@ -64,6 +64,7 @@ namespace yazlab
             messageComboBox.Name = "messageComboBox";
             messageComboBox.Size = new System.Drawing.Size(238, 23);
             messageComboBox.TabIndex = 0;
+            messageComboBox.SelectedIndexChanged += messageComboBox_SelectedIndexChanged;
             // 
             // messageListBox
             // 
@@ -82,6 +83,7 @@ namespace yazlab
             messageSendButton.TabIndex = 2;
             messageSendButton.Text = "Send";
             messageSendButton.UseVisualStyleBackColor = true;
+            messageSendButton.Click += messageSendButton_Click;
             // 
             // messagesTextBox
             // 
