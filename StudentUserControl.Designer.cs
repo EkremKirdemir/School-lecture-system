@@ -42,6 +42,7 @@ namespace yazlab
             messageTextBox = new System.Windows.Forms.TextBox();
             messagesListBox = new System.Windows.Forms.ListBox();
             messagesComboBox = new System.Windows.Forms.ComboBox();
+            buttonBack = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -50,7 +51,7 @@ namespace yazlab
             // 
             // usTranscript
             // 
-            usTranscript.Location = new System.Drawing.Point(24, 19);
+            usTranscript.Location = new System.Drawing.Point(17, 52);
             usTranscript.Name = "usTranscript";
             usTranscript.Size = new System.Drawing.Size(113, 41);
             usTranscript.TabIndex = 0;
@@ -62,7 +63,7 @@ namespace yazlab
             // 
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
-            listBox1.Location = new System.Drawing.Point(24, 109);
+            listBox1.Location = new System.Drawing.Point(17, 142);
             listBox1.Name = "listBox1";
             listBox1.Size = new System.Drawing.Size(324, 169);
             listBox1.TabIndex = 1;
@@ -70,7 +71,7 @@ namespace yazlab
             // 
             // demandCourse
             // 
-            demandCourse.Location = new System.Drawing.Point(143, 20);
+            demandCourse.Location = new System.Drawing.Point(136, 53);
             demandCourse.Name = "demandCourse";
             demandCourse.Size = new System.Drawing.Size(105, 41);
             demandCourse.TabIndex = 2;
@@ -81,7 +82,7 @@ namespace yazlab
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(24, 71);
+            label1.Location = new System.Drawing.Point(17, 104);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(0, 15);
             label1.TabIndex = 3;
@@ -89,7 +90,7 @@ namespace yazlab
             // checkedListBox1
             // 
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Location = new System.Drawing.Point(24, 109);
+            checkedListBox1.Location = new System.Drawing.Point(17, 142);
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new System.Drawing.Size(324, 166);
             checkedListBox1.TabIndex = 4;
@@ -97,7 +98,7 @@ namespace yazlab
             // 
             // sdCourses
             // 
-            sdCourses.Location = new System.Drawing.Point(255, 20);
+            sdCourses.Location = new System.Drawing.Point(248, 53);
             sdCourses.Name = "sdCourses";
             sdCourses.Size = new System.Drawing.Size(106, 40);
             sdCourses.TabIndex = 5;
@@ -107,7 +108,7 @@ namespace yazlab
             // 
             // add
             // 
-            add.Location = new System.Drawing.Point(142, 67);
+            add.Location = new System.Drawing.Point(135, 100);
             add.Name = "add";
             add.Size = new System.Drawing.Size(106, 23);
             add.TabIndex = 6;
@@ -117,7 +118,7 @@ namespace yazlab
             // 
             // Delete
             // 
-            Delete.Location = new System.Drawing.Point(256, 67);
+            Delete.Location = new System.Drawing.Point(249, 100);
             Delete.Name = "Delete";
             Delete.Size = new System.Drawing.Size(105, 23);
             Delete.TabIndex = 7;
@@ -127,7 +128,7 @@ namespace yazlab
             // 
             // sendButton
             // 
-            sendButton.Location = new System.Drawing.Point(685, 255);
+            sendButton.Location = new System.Drawing.Point(678, 288);
             sendButton.Name = "sendButton";
             sendButton.Size = new System.Drawing.Size(75, 23);
             sendButton.TabIndex = 8;
@@ -137,7 +138,7 @@ namespace yazlab
             // 
             // messageTextBox
             // 
-            messageTextBox.Location = new System.Drawing.Point(552, 255);
+            messageTextBox.Location = new System.Drawing.Point(545, 288);
             messageTextBox.Name = "messageTextBox";
             messageTextBox.Size = new System.Drawing.Size(127, 23);
             messageTextBox.TabIndex = 9;
@@ -146,7 +147,7 @@ namespace yazlab
             // 
             messagesListBox.FormattingEnabled = true;
             messagesListBox.ItemHeight = 15;
-            messagesListBox.Location = new System.Drawing.Point(552, 60);
+            messagesListBox.Location = new System.Drawing.Point(545, 93);
             messagesListBox.Name = "messagesListBox";
             messagesListBox.Size = new System.Drawing.Size(208, 184);
             messagesListBox.TabIndex = 10;
@@ -154,17 +155,28 @@ namespace yazlab
             // messagesComboBox
             // 
             messagesComboBox.FormattingEnabled = true;
-            messagesComboBox.Location = new System.Drawing.Point(552, 20);
+            messagesComboBox.Location = new System.Drawing.Point(545, 53);
             messagesComboBox.Name = "messagesComboBox";
             messagesComboBox.Size = new System.Drawing.Size(208, 23);
             messagesComboBox.TabIndex = 11;
             messagesComboBox.SelectedIndexChanged += messagesComboBox_SelectedIndexChanged;
+            // 
+            // buttonBack
+            // 
+            buttonBack.Location = new System.Drawing.Point(17, 13);
+            buttonBack.Name = "buttonBack";
+            buttonBack.Size = new System.Drawing.Size(75, 23);
+            buttonBack.TabIndex = 12;
+            buttonBack.Text = "Back";
+            buttonBack.UseVisualStyleBackColor = true;
+            buttonBack.Click += buttonBack_Click;
             // 
             // StudentUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(buttonBack);
             Controls.Add(messagesComboBox);
             Controls.Add(messagesListBox);
             Controls.Add(messageTextBox);
@@ -199,5 +211,6 @@ namespace yazlab
         private System.Windows.Forms.TextBox messageTextBox;
         private System.Windows.Forms.ListBox messagesListBox;
         private System.Windows.Forms.ComboBox messagesComboBox;
+        private System.Windows.Forms.Button buttonBack;
     }
 }

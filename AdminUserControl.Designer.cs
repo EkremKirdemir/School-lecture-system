@@ -70,14 +70,14 @@ namespace yazlab
             textBox9 = new System.Windows.Forms.TextBox();
             textBox10 = new System.Windows.Forms.TextBox();
             textBox11 = new System.Windows.Forms.TextBox();
+            buttonBack = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new System.Drawing.Point(79, 279);
-            button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button1.Location = new System.Drawing.Point(69, 247);
             button1.Name = "button1";
-            button1.Size = new System.Drawing.Size(126, 31);
+            button1.Size = new System.Drawing.Size(110, 23);
             button1.TabIndex = 0;
             button1.Text = "Add Teacher";
             button1.UseVisualStyleBackColor = true;
@@ -86,148 +86,158 @@ namespace yazlab
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(41, 55);
+            label1.Location = new System.Drawing.Point(36, 79);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(85, 20);
+            label1.Size = new System.Drawing.Size(68, 15);
             label1.TabIndex = 1;
             label1.Text = "User Name:";
+            label1.Click += label1_Click;
             // 
             // textBox1
             // 
-            textBox1.Location = new System.Drawing.Point(138, 51);
-            textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox1.Location = new System.Drawing.Point(121, 76);
             textBox1.Name = "textBox1";
-            textBox1.Size = new System.Drawing.Size(114, 27);
+            textBox1.Size = new System.Drawing.Size(100, 23);
             textBox1.TabIndex = 2;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(59, 20);
+            label2.Location = new System.Drawing.Point(52, 53);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(197, 20);
+            label2.Size = new System.Drawing.Size(153, 15);
             label2.TabIndex = 1;
             label2.Text = "Teacher Add/Update/Delete";
+            label2.Click += label2_Click;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(41, 93);
+            label3.Location = new System.Drawing.Point(36, 108);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(52, 20);
+            label3.Size = new System.Drawing.Size(42, 15);
             label3.TabIndex = 1;
             label3.Text = "Name:";
+            label3.Click += label3_Click;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(41, 132);
+            label4.Location = new System.Drawing.Point(36, 137);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(70, 20);
+            label4.Size = new System.Drawing.Size(57, 15);
             label4.TabIndex = 1;
             label4.Text = "Surname:";
+            label4.Click += label4_Click;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(41, 171);
+            label5.Location = new System.Drawing.Point(36, 166);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(94, 20);
+            label5.Size = new System.Drawing.Size(77, 15);
             label5.TabIndex = 1;
             label5.Text = "Course Limit:";
+            label5.Click += label5_Click;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(41, 213);
+            label6.Location = new System.Drawing.Point(36, 198);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(73, 20);
+            label6.Size = new System.Drawing.Size(60, 15);
             label6.TabIndex = 1;
             label6.Text = "Password:";
+            label6.Click += label6_Click;
             // 
             // textBox2
             // 
-            textBox2.Location = new System.Drawing.Point(138, 89);
-            textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox2.Location = new System.Drawing.Point(121, 105);
             textBox2.Name = "textBox2";
-            textBox2.Size = new System.Drawing.Size(114, 27);
+            textBox2.Size = new System.Drawing.Size(100, 23);
             textBox2.TabIndex = 2;
+            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // textBox3
             // 
-            textBox3.Location = new System.Drawing.Point(138, 128);
-            textBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox3.Location = new System.Drawing.Point(121, 134);
             textBox3.Name = "textBox3";
-            textBox3.Size = new System.Drawing.Size(114, 27);
+            textBox3.Size = new System.Drawing.Size(100, 23);
             textBox3.TabIndex = 2;
+            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // textBox4
             // 
-            textBox4.Location = new System.Drawing.Point(138, 167);
-            textBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox4.Location = new System.Drawing.Point(121, 163);
             textBox4.Name = "textBox4";
-            textBox4.Size = new System.Drawing.Size(114, 27);
+            textBox4.Size = new System.Drawing.Size(100, 23);
             textBox4.TabIndex = 2;
+            textBox4.TextChanged += textBox4_TextChanged;
             // 
             // textBox5
             // 
-            textBox5.Location = new System.Drawing.Point(138, 209);
-            textBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox5.Location = new System.Drawing.Point(121, 195);
             textBox5.Name = "textBox5";
-            textBox5.Size = new System.Drawing.Size(114, 27);
+            textBox5.Size = new System.Drawing.Size(100, 23);
             textBox5.TabIndex = 2;
+            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(301, 55);
+            label7.Location = new System.Drawing.Point(263, 79);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(85, 20);
+            label7.Size = new System.Drawing.Size(68, 15);
             label7.TabIndex = 1;
             label7.Text = "User Name:";
+            label7.Click += label7_Click;
             // 
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(313, 20);
+            label8.Location = new System.Drawing.Point(274, 53);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(197, 20);
+            label8.Size = new System.Drawing.Size(154, 15);
             label8.TabIndex = 1;
             label8.Text = "Student Add/Update/Delete";
+            label8.Click += label8_Click;
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new System.Drawing.Point(301, 89);
+            label9.Location = new System.Drawing.Point(263, 105);
             label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(52, 20);
+            label9.Size = new System.Drawing.Size(42, 15);
             label9.TabIndex = 1;
             label9.Text = "Name:";
+            label9.Click += label9_Click;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new System.Drawing.Point(301, 167);
+            label10.Location = new System.Drawing.Point(263, 163);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(73, 20);
+            label10.Size = new System.Drawing.Size(60, 15);
             label10.TabIndex = 1;
             label10.Text = "Password:";
+            label10.Click += label10_Click;
             // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new System.Drawing.Point(301, 128);
+            label11.Location = new System.Drawing.Point(263, 134);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(70, 20);
+            label11.Size = new System.Drawing.Size(57, 15);
             label11.TabIndex = 1;
             label11.Text = "Surname:";
+            label11.Click += label11_Click;
             // 
             // button2
             // 
-            button2.Location = new System.Drawing.Point(346, 279);
-            button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button2.Location = new System.Drawing.Point(303, 247);
             button2.Name = "button2";
-            button2.Size = new System.Drawing.Size(126, 31);
+            button2.Size = new System.Drawing.Size(110, 23);
             button2.TabIndex = 0;
             button2.Text = "Add Student";
             button2.UseVisualStyleBackColor = true;
@@ -235,29 +245,29 @@ namespace yazlab
             // 
             // button3
             // 
-            button3.Location = new System.Drawing.Point(138, 453);
-            button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button3.Location = new System.Drawing.Point(121, 378);
             button3.Name = "button3";
-            button3.Size = new System.Drawing.Size(126, 31);
+            button3.Size = new System.Drawing.Size(110, 23);
             button3.TabIndex = 0;
             button3.Text = "Atama Yap";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new System.Drawing.Point(138, 429);
+            label12.Location = new System.Drawing.Point(121, 360);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(163, 20);
+            label12.Size = new System.Drawing.Size(130, 15);
             label12.TabIndex = 1;
             label12.Text = "Otomatik Atama Ekranı";
+            label12.Click += label12_Click;
             // 
             // button4
             // 
-            button4.Location = new System.Drawing.Point(346, 317);
-            button4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button4.Location = new System.Drawing.Point(303, 276);
             button4.Name = "button4";
-            button4.Size = new System.Drawing.Size(126, 31);
+            button4.Size = new System.Drawing.Size(110, 23);
             button4.TabIndex = 0;
             button4.Text = "Delete Student";
             button4.UseVisualStyleBackColor = true;
@@ -265,10 +275,9 @@ namespace yazlab
             // 
             // button5
             // 
-            button5.Location = new System.Drawing.Point(79, 317);
-            button5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button5.Location = new System.Drawing.Point(69, 276);
             button5.Name = "button5";
-            button5.Size = new System.Drawing.Size(126, 31);
+            button5.Size = new System.Drawing.Size(110, 23);
             button5.TabIndex = 0;
             button5.Text = "Update Teacher";
             button5.UseVisualStyleBackColor = true;
@@ -276,10 +285,9 @@ namespace yazlab
             // 
             // button6
             // 
-            button6.Location = new System.Drawing.Point(79, 356);
-            button6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button6.Location = new System.Drawing.Point(69, 305);
             button6.Name = "button6";
-            button6.Size = new System.Drawing.Size(126, 31);
+            button6.Size = new System.Drawing.Size(110, 23);
             button6.TabIndex = 0;
             button6.Text = "Delete Teacher";
             button6.UseVisualStyleBackColor = true;
@@ -287,10 +295,9 @@ namespace yazlab
             // 
             // button7
             // 
-            button7.Location = new System.Drawing.Point(346, 356);
-            button7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button7.Location = new System.Drawing.Point(303, 305);
             button7.Name = "button7";
-            button7.Size = new System.Drawing.Size(126, 31);
+            button7.Size = new System.Drawing.Size(110, 23);
             button7.TabIndex = 0;
             button7.Text = "Update Student";
             button7.UseVisualStyleBackColor = true;
@@ -299,27 +306,28 @@ namespace yazlab
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(405, 429);
+            label13.Location = new System.Drawing.Point(354, 360);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(179, 20);
+            label13.Size = new System.Drawing.Size(143, 15);
             label13.TabIndex = 1;
             label13.Text = "Otomatik Öğrenci Ekleme";
+            label13.Click += label13_Click;
             // 
             // label20
             // 
             label20.AutoSize = true;
-            label20.Location = new System.Drawing.Point(13, 255);
+            label20.Location = new System.Drawing.Point(11, 229);
             label20.Name = "label20";
-            label20.Size = new System.Drawing.Size(116, 20);
+            label20.Size = new System.Drawing.Size(93, 15);
             label20.TabIndex = 1;
             label20.Text = "Choose Teacher:";
+            label20.Click += label20_Click;
             // 
             // button10
             // 
-            button10.Location = new System.Drawing.Point(663, 185);
-            button10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            button10.Location = new System.Drawing.Point(580, 177);
             button10.Name = "button10";
-            button10.Size = new System.Drawing.Size(126, 31);
+            button10.Size = new System.Drawing.Size(110, 23);
             button10.TabIndex = 0;
             button10.Text = "Add Lesson";
             button10.UseVisualStyleBackColor = true;
@@ -328,129 +336,143 @@ namespace yazlab
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new System.Drawing.Point(565, 89);
+            label17.Location = new System.Drawing.Point(494, 105);
             label17.Name = "label17";
-            label17.Size = new System.Drawing.Size(47, 20);
+            label17.Size = new System.Drawing.Size(38, 15);
             label17.TabIndex = 1;
             label17.Text = "Code:";
+            label17.Click += label17_Click;
             // 
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new System.Drawing.Point(565, 55);
+            label19.Location = new System.Drawing.Point(494, 79);
             label19.Name = "label19";
-            label19.Size = new System.Drawing.Size(52, 20);
+            label19.Size = new System.Drawing.Size(42, 15);
             label19.TabIndex = 1;
             label19.Text = "Name:";
+            label19.Click += label19_Click;
             // 
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new System.Drawing.Point(565, 132);
+            label16.Location = new System.Drawing.Point(494, 137);
             label16.Name = "label16";
-            label16.Size = new System.Drawing.Size(116, 20);
+            label16.Size = new System.Drawing.Size(93, 15);
             label16.TabIndex = 1;
             label16.Text = "Choose Teacher:";
+            label16.Click += label16_Click;
             // 
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new System.Drawing.Point(678, 20);
+            label15.Location = new System.Drawing.Point(593, 53);
             label15.Name = "label15";
-            label15.Size = new System.Drawing.Size(86, 20);
+            label15.Size = new System.Drawing.Size(69, 15);
             label15.TabIndex = 1;
             label15.Text = "Course Add";
+            label15.Click += label15_Click;
             // 
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new System.Drawing.Point(678, 124);
-            comboBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            comboBox1.Location = new System.Drawing.Point(593, 131);
             comboBox1.Name = "comboBox1";
-            comboBox1.Size = new System.Drawing.Size(138, 28);
+            comboBox1.Size = new System.Drawing.Size(121, 23);
             comboBox1.TabIndex = 55;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged_1;
             // 
             // comboBox2
             // 
             comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new System.Drawing.Point(126, 248);
-            comboBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            comboBox2.Location = new System.Drawing.Point(110, 224);
             comboBox2.Name = "comboBox2";
-            comboBox2.Size = new System.Drawing.Size(138, 28);
+            comboBox2.Size = new System.Drawing.Size(121, 23);
             comboBox2.TabIndex = 56;
             comboBox2.SelectedIndexChanged += comboBox2_SelectedIndexChanged;
             // 
             // comboBox3
             // 
             comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new System.Drawing.Point(405, 248);
-            comboBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            comboBox3.Location = new System.Drawing.Point(354, 224);
             comboBox3.Name = "comboBox3";
-            comboBox3.Size = new System.Drawing.Size(138, 28);
+            comboBox3.Size = new System.Drawing.Size(121, 23);
             comboBox3.TabIndex = 57;
             comboBox3.SelectedIndexChanged += comboBox3_SelectedIndexChanged;
             // 
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new System.Drawing.Point(291, 252);
+            label18.Location = new System.Drawing.Point(255, 227);
             label18.Name = "label18";
-            label18.Size = new System.Drawing.Size(116, 20);
+            label18.Size = new System.Drawing.Size(94, 15);
             label18.TabIndex = 1;
             label18.Text = "Choose Student:";
+            label18.Click += label18_Click;
             // 
             // textBox6
             // 
-            textBox6.Location = new System.Drawing.Point(385, 44);
-            textBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox6.Location = new System.Drawing.Point(337, 71);
             textBox6.Name = "textBox6";
-            textBox6.Size = new System.Drawing.Size(114, 27);
+            textBox6.Size = new System.Drawing.Size(100, 23);
             textBox6.TabIndex = 2;
+            textBox6.TextChanged += textBox6_TextChanged;
             // 
             // textBox7
             // 
-            textBox7.Location = new System.Drawing.Point(385, 83);
-            textBox7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox7.Location = new System.Drawing.Point(337, 100);
             textBox7.Name = "textBox7";
-            textBox7.Size = new System.Drawing.Size(114, 27);
+            textBox7.Size = new System.Drawing.Size(100, 23);
             textBox7.TabIndex = 2;
+            textBox7.TextChanged += textBox7_TextChanged;
             // 
             // textBox8
             // 
-            textBox8.Location = new System.Drawing.Point(385, 121);
-            textBox8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox8.Location = new System.Drawing.Point(337, 129);
             textBox8.Name = "textBox8";
-            textBox8.Size = new System.Drawing.Size(114, 27);
+            textBox8.Size = new System.Drawing.Size(100, 23);
             textBox8.TabIndex = 2;
+            textBox8.TextChanged += textBox8_TextChanged;
             // 
             // textBox9
             // 
-            textBox9.Location = new System.Drawing.Point(385, 160);
-            textBox9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox9.Location = new System.Drawing.Point(337, 158);
             textBox9.Name = "textBox9";
-            textBox9.Size = new System.Drawing.Size(114, 27);
+            textBox9.Size = new System.Drawing.Size(100, 23);
             textBox9.TabIndex = 2;
+            textBox9.TextChanged += textBox9_TextChanged;
             // 
             // textBox10
             // 
-            textBox10.Location = new System.Drawing.Point(678, 51);
-            textBox10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox10.Location = new System.Drawing.Point(593, 76);
             textBox10.Name = "textBox10";
-            textBox10.Size = new System.Drawing.Size(114, 27);
+            textBox10.Size = new System.Drawing.Size(100, 23);
             textBox10.TabIndex = 2;
+            textBox10.TextChanged += textBox10_TextChanged;
             // 
             // textBox11
             // 
-            textBox11.Location = new System.Drawing.Point(675, 89);
-            textBox11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            textBox11.Location = new System.Drawing.Point(591, 105);
             textBox11.Name = "textBox11";
-            textBox11.Size = new System.Drawing.Size(114, 27);
+            textBox11.Size = new System.Drawing.Size(100, 23);
             textBox11.TabIndex = 2;
+            textBox11.TextChanged += textBox11_TextChanged;
+            // 
+            // buttonBack
+            // 
+            buttonBack.Location = new System.Drawing.Point(44, 20);
+            buttonBack.Name = "buttonBack";
+            buttonBack.Size = new System.Drawing.Size(75, 23);
+            buttonBack.TabIndex = 58;
+            buttonBack.Text = "Back";
+            buttonBack.UseVisualStyleBackColor = true;
+            buttonBack.Click += buttonBack_Click;
             // 
             // AdminUserControl
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(buttonBack);
             Controls.Add(comboBox2);
             Controls.Add(comboBox3);
             Controls.Add(comboBox1);
@@ -492,10 +514,10 @@ namespace yazlab
             Controls.Add(button4);
             Controls.Add(button2);
             Controls.Add(button1);
-            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             Name = "AdminUserControl";
-            Size = new System.Drawing.Size(859, 639);
+            Size = new System.Drawing.Size(752, 479);
             Load += AdminUserControl_Load;
+            VisibleChanged += AdminUserControl_VisibleChanged;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -543,5 +565,6 @@ namespace yazlab
         private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.Button buttonBack;
     }
 }

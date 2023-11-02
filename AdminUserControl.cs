@@ -102,7 +102,7 @@ namespace yazlab
             DataRow newRow1 = dataTab1.NewRow();
             newRow1["FullName"] = "New Student";
             newRow1["student_id"] = -1;
-            
+
             dataTab1.Rows.InsertAt(newRow1, 0);
             comboBox3.DataSource = dataTab1;
 
@@ -111,7 +111,7 @@ namespace yazlab
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
+
         }
 
 
@@ -182,7 +182,7 @@ namespace yazlab
         private void button5_Click(object sender, EventArgs e)
         {
             baglanti.Open();
-            int teacherIdToUpdate = (int)comboBox2.SelectedValue; 
+            int teacherIdToUpdate = (int)comboBox2.SelectedValue;
 
             NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE teachers SET name = @p1, surname = @p2, username = @p3, password = @p4, quota = @p5 WHERE identification_number = @teacherid", baglanti);
             komut1.Parameters.AddWithValue("@p1", textBox2.Text);
@@ -257,7 +257,7 @@ namespace yazlab
                         }
                         else
                         {
-                            
+
                         }
                     }
                 }
@@ -284,7 +284,7 @@ namespace yazlab
                 {
 
                     command.Parameters.AddWithValue("@identificationNumber", identificationNumber);
-                    
+
                     baglanti.Open();
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
@@ -298,12 +298,154 @@ namespace yazlab
                         }
                         else
                         {
-                            
+
                         }
                     }
                     baglanti.Close();
                 }
             }
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox10_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label15_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label20_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            this.Visible = false;
+        }
+
+        private void AdminUserControl_VisibleChanged(object sender, EventArgs e)
+        {
+            comboBoxUpdate();
+            comboBox1.SelectedIndex = 0;
+            comboBox2.SelectedIndex = 0;
+            comboBox3.SelectedIndex = 0;
         }
     }
 }

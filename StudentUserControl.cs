@@ -17,6 +17,7 @@ using Spire.Pdf.Exporting.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
+using Spire.Pdf.Grid;
 
 namespace yazlab
 {
@@ -25,7 +26,7 @@ namespace yazlab
         public StudentUserControl()
         {
             InitializeComponent();
-            
+
         }
 
         private void StudentUserControl_Load(object sender, EventArgs e)
@@ -210,46 +211,56 @@ namespace yazlab
             messagesComboBox.DisplayMember = "FullName";
             messagesComboBox.ValueMember = "identification_number";
             messagesComboBox.DataSource = dataTable;
+            DataTable dataTab1 = (DataTable)messagesComboBox.DataSource;
+            DataRow newRow1 = dataTab1.NewRow();
+            newRow1["FullName"] = "";
+            newRow1["identification_number"] = -1;
+            dataTab1.Rows.InsertAt(newRow1, 0);
+            messagesComboBox.DataSource = dataTab1;
+            messagesComboBox.SelectedIndex = 0;
         }
         public void messagesListBoxUpdate()
         {
-            int identificationNumber = (int)messagesComboBox.SelectedValue;
-            int targetStudentId = studentid;
-
-            string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
-
-            baglanti.Open();
-            using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelectMessages, baglanti))
+            if (messagesComboBox.SelectedIndex != 0)
             {
-                selectCommand.Parameters.AddWithValue("@identificationNumber", identificationNumber);
+                int identificationNumber = (int)messagesComboBox.SelectedValue;
+                int targetStudentId = studentid;
 
-                var dbResult = selectCommand.ExecuteScalar();
-                var existingJsonData = dbResult != DBNull.Value ? (string)dbResult : "[]";
+                string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
-                var messages = JsonSerializer.Deserialize<List<Content>>(existingJsonData);
-
-                messagesListBox.Items.Clear();
-
-                foreach (var message in messages)
+                baglanti.Open();
+                using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelectMessages, baglanti))
                 {
-                    if (message.StudentId == targetStudentId)
-                    {
-                        string senderName = "";
-                        if (message.Sent == 0)
-                        {
-                            senderName = GetNameSurname("students", "student_id", message.StudentId);
-                        }
-                        else
-                        {
-                            senderName = GetNameSurname("teachers", "identification_number", identificationNumber);
-                        }
+                    selectCommand.Parameters.AddWithValue("@identificationNumber", identificationNumber);
 
-                        string displayText = $"{senderName}: {message.Message}";
-                        messagesListBox.Items.Add(displayText);
+                    var dbResult = selectCommand.ExecuteScalar();
+                    var existingJsonData = dbResult != DBNull.Value ? (string)dbResult : "[]";
+
+                    var messages = JsonSerializer.Deserialize<List<Content>>(existingJsonData);
+
+                    messagesListBox.Items.Clear();
+
+                    foreach (var message in messages)
+                    {
+                        if (message.StudentId == targetStudentId)
+                        {
+                            string senderName = "";
+                            if (message.Sent == 0)
+                            {
+                                senderName = GetNameSurname("students", "student_id", message.StudentId);
+                            }
+                            else
+                            {
+                                senderName = GetNameSurname("teachers", "identification_number", identificationNumber);
+                            }
+
+                            string displayText = $"{senderName}: {message.Message}";
+                            messagesListBox.Items.Add(displayText);
+                        }
                     }
                 }
+                baglanti.Close();
             }
-            baglanti.Close();
         }
         private string GetNameSurname(string tableName, string idColumn, int idValue)
         {
@@ -287,7 +298,7 @@ namespace yazlab
             {
                 StudentId = studentid,
                 Message = messageTextBox.Text.Trim(),
-                Sent = 0 
+                Sent = 0
             };
 
             baglanti.Open();
@@ -320,8 +331,19 @@ namespace yazlab
         {
             studentid = id;
             messageComboboxUpdate();
+            
         }
 
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            checkedListBox1.Items.Clear();
+            messagesListBox.Items.Clear();
+            messagesComboBox.SelectedIndex = 0;
+            messageTextBox.Clear();
+            gpaList.Clear();
+            this.Visible = false;
+        }
     }
 
     public class CourseData
