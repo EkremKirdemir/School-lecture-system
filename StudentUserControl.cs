@@ -104,7 +104,7 @@ namespace yazlab
                 List<CourseData> courseData = SplitTranscript(pageText);
                 baglanti.Open();
                 double gpa = gpaList[gpaList.Count - 1];
-                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=4";
+                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=48";
                 using (NpgsqlCommand updateCommand = new NpgsqlCommand(gpaUpdate, baglanti))
                 {
                     updateCommand.Parameters.AddWithValue("@gpa", gpa);
@@ -122,7 +122,7 @@ namespace yazlab
                     };
                     baglanti.Open();
                     
-                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=4";
+                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=48";
 
                     using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
                     {
@@ -139,7 +139,7 @@ namespace yazlab
 
                         string updatedJsonStr = JsonSerializer.Serialize(existingData);
 
-                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=4 ";
+                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=48";
 
                         using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
                         {

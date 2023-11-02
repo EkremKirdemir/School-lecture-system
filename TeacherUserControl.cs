@@ -165,6 +165,7 @@ namespace yazlab
 
         private void buttonAcceptCriterias_Click(object sender, EventArgs e)
         {
+            transcripListBox.Items.Clear();
             if (criterias.Count == 0)
             {
                 MessageBox.Show("No criteria have been added.");
@@ -256,6 +257,64 @@ namespace yazlab
             // If you need to do something with the ranks list (like updating the UI), do it here
 
             MessageBox.Show("Ranking complete.");
+            baglanti.Open();
+            if (ranks.Count > 1)
+            {
+                for (int i = 0; i < ranks.Count-1; i++)
+                {
+                    for (int j = 1; j < ranks.Count; j++)
+                    {
+                        if (ranks[i].Value < ranks[j].Value)
+                        {
+                            List<Rank> temp = new List<Rank>();
+                            temp.Add(ranks[i]);
+                            ranks[i] = ranks[j];
+                            ranks[j] = temp[0];
+                            temp.Clear();
+                        }
+                    }
+                }
+                for (int i = 0; i < ranks.Count; i++)
+                {
+                    transcripListBox.Visible = true;
+                    string sqlSelect = "SELECT name,surname FROM students WHERE student_id=@i";
+                    using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+                    {
+                        selectCommand.Parameters.AddWithValue("@i", ranks[i].id);
+
+                        using (NpgsqlDataReader reader = selectCommand.ExecuteReader())
+                        {
+
+                            if (reader.Read())
+                            {
+                                transcripListBox.Items.Add(reader["name"].ToString() + " " + reader["surname"].ToString() + "       " + ranks[i].Value.ToString());                             
+                            }
+                        }
+                    }
+                }
+
+            }
+            else if(ranks.Count == 1)
+            {
+                string sqlSelect = "SELECT name,surname FROM students WHERE student_id=@studentId";
+                int studentID = ranks[0].id;
+                
+                using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+                {
+                    selectCommand.Parameters.AddWithValue("@studentId", ranks[0].id);
+                    
+                    using (NpgsqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        
+                        if (reader.Read())
+                        {
+                            transcripListBox.Items.Add(reader["name"].ToString() + " " + reader["surname"].ToString() + "       " + ranks[0].Value.ToString());
+                            transcripListBox.Visible = true;
+                        }
+                    }
+                }
+            }
+                baglanti.Close();
         }
         private void buttonInterest_Click(object sender, EventArgs e)
         {
