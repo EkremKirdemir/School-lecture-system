@@ -52,6 +52,8 @@ namespace yazlab
             buttonAddCriteria = new System.Windows.Forms.Button();
             comboBoxCriteria = new System.Windows.Forms.ComboBox();
             textBoxCriteria = new System.Windows.Forms.TextBox();
+            textBoxInterest = new System.Windows.Forms.TextBox();
+            buttonInterest = new System.Windows.Forms.Button();
             groupBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -212,6 +214,7 @@ namespace yazlab
             buttonDeleteCriteria.TabIndex = 5;
             buttonDeleteCriteria.Text = "DeleteCriterias";
             buttonDeleteCriteria.UseVisualStyleBackColor = true;
+            buttonDeleteCriteria.Click += buttonDeleteCriteria_Click;
             // 
             // buttonAcceptCriterias
             // 
@@ -248,6 +251,7 @@ namespace yazlab
             buttonAddCriteria.TabIndex = 1;
             buttonAddCriteria.Text = "Add Criteria";
             buttonAddCriteria.UseVisualStyleBackColor = true;
+            buttonAddCriteria.Click += buttonAddCriteria_Click;
             // 
             // comboBoxCriteria
             // 
@@ -264,10 +268,30 @@ namespace yazlab
             textBoxCriteria.Size = new System.Drawing.Size(55, 23);
             textBoxCriteria.TabIndex = 3;
             // 
+            // textBoxInterest
+            // 
+            textBoxInterest.Location = new System.Drawing.Point(526, 8);
+            textBoxInterest.Name = "textBoxInterest";
+            textBoxInterest.Size = new System.Drawing.Size(100, 23);
+            textBoxInterest.TabIndex = 12;
+            // 
+            // buttonInterest
+            // 
+            buttonInterest.Location = new System.Drawing.Point(647, 7);
+            buttonInterest.Name = "buttonInterest";
+            buttonInterest.Size = new System.Drawing.Size(85, 23);
+            buttonInterest.TabIndex = 13;
+            buttonInterest.Text = "Add Interest";
+            buttonInterest.UseVisualStyleBackColor = true;
+            buttonInterest.Click += buttonInterest_Click;
+            // 
             // TeacherUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoSize = true;
+            Controls.Add(buttonInterest);
+            Controls.Add(textBoxInterest);
             Controls.Add(groupBox);
             Controls.Add(buttonAccept);
             Controls.Add(buttonApproveCourse);
@@ -318,5 +342,7 @@ namespace yazlab
         private System.Windows.Forms.Button buttonAcceptCriterias;
         private System.Windows.Forms.ListBox listBoxCriteria;
         private System.Windows.Forms.TextBox textBoxCriteria;
+        private System.Windows.Forms.TextBox textBoxInterest;
+        private System.Windows.Forms.Button buttonInterest;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,8 +28,9 @@ namespace yazlab
         }
         NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<CourseData> courses = new List<CourseData>();
+        List<Criteria> criterias = new List<Criteria>();
         void comboBoxUpdate()
-        {           
+        {
             baglanti.Open();
             NpgsqlDataAdapter studentDa = new NpgsqlDataAdapter("SELECT student_id ||' - '||  name || ' ' || surname AS FullName, student_id FROM students", baglanti);
             DataTable studentDt = new DataTable();
@@ -54,10 +56,12 @@ namespace yazlab
                     if (!courses.Any(c => c.Code == course.Code))
                     {
                         courses.Add(course);
+                        comboBoxCriteria.Items.Add(course.Name);
                     }
                 }
             }
-            
+
+
         }
         public List<int> GetStudentIdsWithNonNullTranscripts()
         {
@@ -83,8 +87,8 @@ namespace yazlab
         {
             List<CourseData> courses = new List<CourseData>();
 
-           
-                baglanti.Open();
+
+            baglanti.Open();
             try
             {
                 string sqlSelect = "SELECT transcript FROM students WHERE student_id=@studentId AND transcript IS NOT null";
@@ -110,7 +114,7 @@ namespace yazlab
             }
 
             baglanti.Close();
-            
+
 
             return courses;
         }
@@ -130,5 +134,88 @@ namespace yazlab
                 }
             }
         }
+
+        private void buttonAddCriteria_Click(object sender, EventArgs e)
+        {
+            int value;
+            if (int.TryParse(textBoxCriteria.Text, out value) && comboBoxCriteria.SelectedItem != null)
+            {
+                Criteria criteria = new Criteria();
+                criteria.Name = comboBoxCriteria.SelectedItem.ToString();
+                criteria.Value = value;
+                criterias.Add(criteria);
+                listBoxCriteria.Items.Add(criteria.Name + " X " + criteria.Value.ToString());
+            }
+            else if (textBoxCriteria.Text == "" && comboBoxCriteria.SelectedItem != null)
+            {
+                Criteria criteria = new Criteria();
+                criteria.Name = comboBoxCriteria.SelectedItem.ToString();
+                criteria.Value = 1;
+                criterias.Add(criteria);
+                listBoxCriteria.Items.Add(criteria.Name + " X " + criteria.Value.ToString());
+            }
+
+        }
+
+        private void buttonDeleteCriteria_Click(object sender, EventArgs e)
+        {
+            if (listBoxCriteria.SelectedItem != null)
+            {
+                string selectedItem = comboBoxCriteria.SelectedItem.ToString().Split(" X ")[0];
+                criterias.RemoveAll(criteria => criteria.Name == selectedItem);
+                listBoxCriteria.Items.Remove(listBoxCriteria.SelectedItem);
+            }
+        }
+
+        private void buttonInterest_Click(object sender, EventArgs e)
+        {
+            if (textBoxInterest.Text != "")
+            {
+                var newInterest = new Interest
+                {
+                    interest_area = textBoxInterest.Text
+                };
+
+                // Fetch the existing interest_areas for the teacher
+                baglanti.Open();
+                NpgsqlCommand selectCommand = new NpgsqlCommand("SELECT interest_areas FROM teachers WHERE identification_number = 1", baglanti);
+                string existingJsonData = selectCommand.ExecuteScalar() as string;
+                baglanti.Close();
+
+                List<Interest> existingInterests;
+
+                if (!string.IsNullOrEmpty(existingJsonData))
+                {
+                    existingInterests = JsonSerializer.Deserialize<List<Interest>>(existingJsonData);
+                }
+                else
+                {
+                    existingInterests = new List<Interest>();
+                }
+
+                // Add the new interest
+                existingInterests.Add(newInterest);
+
+                // Serialize and update the database
+                string updatedJsonStr = JsonSerializer.Serialize(existingInterests);
+                NpgsqlCommand komut1 = new NpgsqlCommand("UPDATE teachers SET interest_areas = @p1 WHERE identification_number = 1", baglanti);
+                komut1.Parameters.Add(new NpgsqlParameter("@p1", NpgsqlDbType.Jsonb) { Value = updatedJsonStr });
+                baglanti.Open();
+                komut1.ExecuteNonQuery();
+                baglanti.Close();
+
+
+
+            }
+        }
+    }
+    public class Criteria
+    {
+        public string Name { get; set; }
+        public int Value { get; set; }
+    }
+    public class Interest
+    {
+        public string interest_area { get; set; }
     }
 }

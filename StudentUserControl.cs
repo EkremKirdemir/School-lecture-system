@@ -115,7 +115,6 @@ namespace yazlab
                 foreach (CourseData course in courseData)
                 {
                     listBox1.Items.Add(course.Code + "   " + course.Name + "   " + course.Credit);
-                    Console.WriteLine(course.Code + "   " + course.Name + "   " + course.Credit);
                     var jsonCourse = new
                     {
                         Code = course.Code,
