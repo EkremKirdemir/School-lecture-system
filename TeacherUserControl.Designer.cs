@@ -54,6 +54,7 @@ namespace yazlab
             textBoxCriteria = new System.Windows.Forms.TextBox();
             textBoxInterest = new System.Windows.Forms.TextBox();
             buttonInterest = new System.Windows.Forms.Button();
+            buttonback = new System.Windows.Forms.Button();
             groupBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -95,7 +96,7 @@ namespace yazlab
             // studentsComboBox
             // 
             studentsComboBox.FormattingEnabled = true;
-            studentsComboBox.Location = new System.Drawing.Point(3, 58);
+            studentsComboBox.Location = new System.Drawing.Point(3, 94);
             studentsComboBox.Name = "studentsComboBox";
             studentsComboBox.Size = new System.Drawing.Size(166, 23);
             studentsComboBox.TabIndex = 4;
@@ -105,7 +106,7 @@ namespace yazlab
             // 
             transcripListBox.FormattingEnabled = true;
             transcripListBox.ItemHeight = 15;
-            transcripListBox.Location = new System.Drawing.Point(3, 87);
+            transcripListBox.Location = new System.Drawing.Point(3, 123);
             transcripListBox.Name = "transcripListBox";
             transcripListBox.Size = new System.Drawing.Size(281, 229);
             transcripListBox.TabIndex = 5;
@@ -114,7 +115,7 @@ namespace yazlab
             // checkedListBox1
             // 
             checkedListBox1.FormattingEnabled = true;
-            checkedListBox1.Location = new System.Drawing.Point(3, 87);
+            checkedListBox1.Location = new System.Drawing.Point(3, 123);
             checkedListBox1.Name = "checkedListBox1";
             checkedListBox1.Size = new System.Drawing.Size(278, 220);
             checkedListBox1.TabIndex = 6;
@@ -122,7 +123,7 @@ namespace yazlab
             // 
             // buttonDemandedFromYou
             // 
-            buttonDemandedFromYou.Location = new System.Drawing.Point(3, 3);
+            buttonDemandedFromYou.Location = new System.Drawing.Point(3, 39);
             buttonDemandedFromYou.Name = "buttonDemandedFromYou";
             buttonDemandedFromYou.Size = new System.Drawing.Size(114, 49);
             buttonDemandedFromYou.TabIndex = 7;
@@ -131,7 +132,7 @@ namespace yazlab
             // 
             // buttonShowOther
             // 
-            buttonShowOther.Location = new System.Drawing.Point(123, 3);
+            buttonShowOther.Location = new System.Drawing.Point(123, 39);
             buttonShowOther.Name = "buttonShowOther";
             buttonShowOther.Size = new System.Drawing.Size(122, 49);
             buttonShowOther.TabIndex = 8;
@@ -140,7 +141,7 @@ namespace yazlab
             // 
             // buttonCourseOptions
             // 
-            buttonCourseOptions.Location = new System.Drawing.Point(251, 3);
+            buttonCourseOptions.Location = new System.Drawing.Point(251, 39);
             buttonCourseOptions.Name = "buttonCourseOptions";
             buttonCourseOptions.Size = new System.Drawing.Size(114, 49);
             buttonCourseOptions.TabIndex = 7;
@@ -149,7 +150,7 @@ namespace yazlab
             // 
             // buttonDemandCourse
             // 
-            buttonDemandCourse.Location = new System.Drawing.Point(371, 3);
+            buttonDemandCourse.Location = new System.Drawing.Point(371, 39);
             buttonDemandCourse.Name = "buttonDemandCourse";
             buttonDemandCourse.Size = new System.Drawing.Size(114, 49);
             buttonDemandCourse.TabIndex = 7;
@@ -158,7 +159,7 @@ namespace yazlab
             // 
             // buttonShowTranscript
             // 
-            buttonShowTranscript.Location = new System.Drawing.Point(175, 58);
+            buttonShowTranscript.Location = new System.Drawing.Point(175, 94);
             buttonShowTranscript.Name = "buttonShowTranscript";
             buttonShowTranscript.Size = new System.Drawing.Size(106, 23);
             buttonShowTranscript.TabIndex = 9;
@@ -167,7 +168,7 @@ namespace yazlab
             // 
             // buttonDemandSmall
             // 
-            buttonDemandSmall.Location = new System.Drawing.Point(290, 98);
+            buttonDemandSmall.Location = new System.Drawing.Point(290, 134);
             buttonDemandSmall.Name = "buttonDemandSmall";
             buttonDemandSmall.Size = new System.Drawing.Size(90, 34);
             buttonDemandSmall.TabIndex = 10;
@@ -176,7 +177,7 @@ namespace yazlab
             // 
             // buttonApproveCourse
             // 
-            buttonApproveCourse.Location = new System.Drawing.Point(290, 138);
+            buttonApproveCourse.Location = new System.Drawing.Point(290, 174);
             buttonApproveCourse.Name = "buttonApproveCourse";
             buttonApproveCourse.Size = new System.Drawing.Size(90, 34);
             buttonApproveCourse.TabIndex = 10;
@@ -185,7 +186,7 @@ namespace yazlab
             // 
             // buttonAccept
             // 
-            buttonAccept.Location = new System.Drawing.Point(290, 178);
+            buttonAccept.Location = new System.Drawing.Point(290, 214);
             buttonAccept.Name = "buttonAccept";
             buttonAccept.Size = new System.Drawing.Size(90, 34);
             buttonAccept.TabIndex = 10;
@@ -201,7 +202,7 @@ namespace yazlab
             groupBox.Controls.Add(buttonAddCriteria);
             groupBox.Controls.Add(comboBoxCriteria);
             groupBox.Controls.Add(textBoxCriteria);
-            groupBox.Location = new System.Drawing.Point(403, 77);
+            groupBox.Location = new System.Drawing.Point(403, 113);
             groupBox.Name = "groupBox";
             groupBox.Size = new System.Drawing.Size(350, 241);
             groupBox.TabIndex = 11;
@@ -273,14 +274,14 @@ namespace yazlab
             // 
             // textBoxInterest
             // 
-            textBoxInterest.Location = new System.Drawing.Point(526, 8);
+            textBoxInterest.Location = new System.Drawing.Point(526, 44);
             textBoxInterest.Name = "textBoxInterest";
             textBoxInterest.Size = new System.Drawing.Size(100, 23);
             textBoxInterest.TabIndex = 12;
             // 
             // buttonInterest
             // 
-            buttonInterest.Location = new System.Drawing.Point(647, 7);
+            buttonInterest.Location = new System.Drawing.Point(647, 43);
             buttonInterest.Name = "buttonInterest";
             buttonInterest.Size = new System.Drawing.Size(85, 23);
             buttonInterest.TabIndex = 13;
@@ -288,11 +289,22 @@ namespace yazlab
             buttonInterest.UseVisualStyleBackColor = true;
             buttonInterest.Click += buttonInterest_Click;
             // 
+            // buttonback
+            // 
+            buttonback.Location = new System.Drawing.Point(3, 8);
+            buttonback.Name = "buttonback";
+            buttonback.Size = new System.Drawing.Size(75, 23);
+            buttonback.TabIndex = 14;
+            buttonback.Text = "Back";
+            buttonback.UseVisualStyleBackColor = true;
+            buttonback.Click += buttonback_Click;
+            // 
             // TeacherUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(buttonback);
             Controls.Add(buttonInterest);
             Controls.Add(textBoxInterest);
             Controls.Add(groupBox);
@@ -314,6 +326,7 @@ namespace yazlab
             Name = "TeacherUserControl";
             Size = new System.Drawing.Size(1035, 410);
             Load += TeacherUserControl_Load;
+            VisibleChanged += TeacherUserControl_VisibleChanged;
             groupBox.ResumeLayout(false);
             groupBox.PerformLayout();
             ResumeLayout(false);
@@ -347,5 +360,6 @@ namespace yazlab
         private System.Windows.Forms.TextBox textBoxCriteria;
         private System.Windows.Forms.TextBox textBoxInterest;
         private System.Windows.Forms.Button buttonInterest;
+        private System.Windows.Forms.Button buttonback;
     }
 }

@@ -22,20 +22,16 @@ namespace yazlab
             {
                 if (role == "student")
                 {
-                    teacherUserControl1.Visible = false;
+                    studentUserControl1.studentIdSet(49);
                     studentUserControl1.Visible = true;
-                    adminUserControl1.Visible = false;
                 }
                 else if (role == "teacher")
                 {
-                    teacherUserControl1.Visible = true;
-                    studentUserControl1.Visible = false;
-                    adminUserControl1.Visible = false;
+                    teacherUserControl1.teacherIdSet(3);
+                    teacherUserControl1.Visible = true;              
                 }
                 else if (role == "admin")
                 {
-                    teacherUserControl1.Visible = false;
-                    studentUserControl1.Visible = false;
                     adminUserControl1.Visible = true;
                 }
                 return true;

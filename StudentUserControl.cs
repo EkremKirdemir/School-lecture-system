@@ -25,7 +25,7 @@ namespace yazlab
         public StudentUserControl()
         {
             InitializeComponent();
-            messageComboboxUpdate();
+            
         }
 
         private void StudentUserControl_Load(object sender, EventArgs e)
@@ -34,6 +34,7 @@ namespace yazlab
         }
         NpgsqlConnection baglanti = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<double> gpaList = new List<double>();
+        int studentid;
         List<CourseData> SplitTranscript(string text)
         {
             List<CourseData> courseData = new List<CourseData>();
@@ -105,7 +106,7 @@ namespace yazlab
                 List<CourseData> courseData = SplitTranscript(pageText);
                 baglanti.Open();
                 double gpa = gpaList[gpaList.Count - 1];
-                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=48";
+                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=49";
                 using (NpgsqlCommand updateCommand = new NpgsqlCommand(gpaUpdate, baglanti))
                 {
                     updateCommand.Parameters.AddWithValue("@gpa", gpa);
@@ -123,7 +124,7 @@ namespace yazlab
                     };
                     baglanti.Open();
 
-                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=48";
+                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=49";
 
                     using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
                     {
@@ -140,7 +141,7 @@ namespace yazlab
 
                         string updatedJsonStr = JsonSerializer.Serialize(existingData);
 
-                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=48";
+                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=49";
 
                         using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
                         {
@@ -213,7 +214,7 @@ namespace yazlab
         public void messagesListBoxUpdate()
         {
             int identificationNumber = (int)messagesComboBox.SelectedValue;
-            int targetStudentId = 48;
+            int targetStudentId = studentid;
 
             string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
@@ -284,7 +285,7 @@ namespace yazlab
 
             var newMessage = new
             {
-                StudentId = 48,
+                StudentId = studentid,
                 Message = messageTextBox.Text.Trim(),
                 Sent = 0 
             };
@@ -314,6 +315,11 @@ namespace yazlab
             }
             baglanti.Close();
             messagesListBoxUpdate();
+        }
+        public void studentIdSet(int id)
+        {
+            studentid = id;
+            messageComboboxUpdate();
         }
 
     }

@@ -19,8 +19,6 @@ namespace yazlab
         public TeacherUserControl()
         {
             InitializeComponent();
-            comboBoxUpdate();
-            messageComboBoxUpdate();
         }
 
         private void TeacherUserControl_Load(object sender, EventArgs e)
@@ -31,6 +29,8 @@ namespace yazlab
         List<CourseData> courses = new List<CourseData>();
         List<Criteria> criterias = new List<Criteria>();
         List<Rank> ranks = new List<Rank>();
+        int teacherId;
+
         void messageComboBoxUpdate()
         {
             baglanti.Open();
@@ -41,6 +41,13 @@ namespace yazlab
             messageComboBox.DisplayMember = "FullName";
             messageComboBox.ValueMember = "student_id";
             messageComboBox.DataSource = studentDt;
+            DataTable dataTab1 = (DataTable)messageComboBox.DataSource;
+            DataRow newRow1 = dataTab1.NewRow();
+            newRow1["FullName"] = "";
+            newRow1["student_id"] = -1;
+            dataTab1.Rows.InsertAt(newRow1, 0);
+            messageComboBox.DataSource = dataTab1;
+            messageComboBox.SelectedIndex = 0;
         }
         void comboBoxUpdate()
         {
@@ -60,6 +67,7 @@ namespace yazlab
             studentsComboBox.DataSource = dataTab1;
             studentsComboBox.SelectedIndex = 0;
             List<int> studentIds = GetStudentIdsWithNonNullTranscripts();
+            comboBoxCriteria.Items.Add("");
             foreach (int id in studentIds)
             {
                 var studentCourses = FetchCourseData(id);
@@ -72,7 +80,7 @@ namespace yazlab
                     }
                 }
             }
-
+            comboBoxCriteria.SelectedIndex = 0;
         }
         public List<int> GetStudentIdsWithNonNullTranscripts()
         {
@@ -128,7 +136,7 @@ namespace yazlab
         }
         private void studentsComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (studentsComboBox.SelectedIndex != 0)
+            if (studentsComboBox.SelectedIndex != 0 && studentsComboBox.SelectedValue != null)
             {
                 transcripListBox.Items.Clear();
                 transcripListBox.Visible = true;
@@ -146,7 +154,7 @@ namespace yazlab
         private void buttonAddCriteria_Click(object sender, EventArgs e)
         {
             int value;
-            if (int.TryParse(textBoxCriteria.Text, out value) && comboBoxCriteria.SelectedItem != null)
+            if (int.TryParse(textBoxCriteria.Text, out value) && comboBoxCriteria.SelectedItem != null && comboBoxCriteria.SelectedIndex != 0)
             {
                 Criteria criteria = new Criteria();
                 criteria.Name = comboBoxCriteria.SelectedItem.ToString();
@@ -154,7 +162,7 @@ namespace yazlab
                 criterias.Add(criteria);
                 listBoxCriteria.Items.Add(criteria.Name + " X " + criteria.Value.ToString());
             }
-            else if (textBoxCriteria.Text == "" && comboBoxCriteria.SelectedItem != null)
+            else if (textBoxCriteria.Text == "" && comboBoxCriteria.SelectedItem != null && comboBoxCriteria.SelectedIndex != 0)
             {
                 Criteria criteria = new Criteria();
                 criteria.Name = comboBoxCriteria.SelectedItem.ToString();
@@ -356,7 +364,7 @@ namespace yazlab
         public void messagesListBoxUpdate()
         {
             int targetStudentId = (int)messageComboBox.SelectedValue;
-            int identificationNumber = 3;
+            int identificationNumber = teacherId;
 
             string sqlSelectMessages = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
@@ -411,6 +419,7 @@ namespace yazlab
         }
         private void messageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(messageComboBox.SelectedValue!= null)
             messagesListBoxUpdate();
         }
 
@@ -422,7 +431,7 @@ namespace yazlab
                 return;
             }
 
-            int identificationNumber = 3;
+            int identificationNumber = teacherId;
             string sqlSelect = "SELECT sent_messages FROM teachers WHERE identification_number = @identificationNumber";
 
             var newMessage = new
@@ -458,7 +467,35 @@ namespace yazlab
             baglanti.Close();
             messagesListBoxUpdate();
         }
-    
+
+        private void buttonback_Click(object sender, EventArgs e)
+        {
+            transcripListBox.Items.Clear();
+            checkedListBox1.Items.Clear();
+            listBoxCriteria.Items.Clear();
+            comboBoxCriteria.Items.Clear();
+            studentsComboBox.DataSource = null;
+            messageComboBox.DataSource = null;
+            comboBoxCriteria.DataSource = null;
+            courses.Clear();
+            criterias.Clear();
+            ranks.Clear();
+            textBoxCriteria.Clear();
+            textBoxInterest.Clear();
+            messagesTextBox.Clear();
+            this.Visible = false;
+        }
+
+        private void TeacherUserControl_VisibleChanged(object sender, EventArgs e)
+        {
+            
+        }
+        public void teacherIdSet(int id)
+        {
+            teacherId = id;
+            comboBoxUpdate();
+            messageComboBoxUpdate();
+        }
     }
     public class Rank
     {
