@@ -91,7 +91,6 @@ namespace yazlab
             label1.Size = new System.Drawing.Size(68, 15);
             label1.TabIndex = 1;
             label1.Text = "User Name:";
-            label1.Click += label1_Click;
             // 
             // textBox1
             // 
@@ -99,7 +98,6 @@ namespace yazlab
             textBox1.Name = "textBox1";
             textBox1.Size = new System.Drawing.Size(100, 23);
             textBox1.TabIndex = 2;
-            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label2
             // 
@@ -109,7 +107,6 @@ namespace yazlab
             label2.Size = new System.Drawing.Size(153, 15);
             label2.TabIndex = 1;
             label2.Text = "Teacher Add/Update/Delete";
-            label2.Click += label2_Click;
             // 
             // label3
             // 
@@ -119,7 +116,6 @@ namespace yazlab
             label3.Size = new System.Drawing.Size(42, 15);
             label3.TabIndex = 1;
             label3.Text = "Name:";
-            label3.Click += label3_Click;
             // 
             // label4
             // 
@@ -129,7 +125,6 @@ namespace yazlab
             label4.Size = new System.Drawing.Size(57, 15);
             label4.TabIndex = 1;
             label4.Text = "Surname:";
-            label4.Click += label4_Click;
             // 
             // label5
             // 
@@ -139,7 +134,6 @@ namespace yazlab
             label5.Size = new System.Drawing.Size(77, 15);
             label5.TabIndex = 1;
             label5.Text = "Course Limit:";
-            label5.Click += label5_Click;
             // 
             // label6
             // 
@@ -149,7 +143,6 @@ namespace yazlab
             label6.Size = new System.Drawing.Size(60, 15);
             label6.TabIndex = 1;
             label6.Text = "Password:";
-            label6.Click += label6_Click;
             // 
             // textBox2
             // 
@@ -157,7 +150,6 @@ namespace yazlab
             textBox2.Name = "textBox2";
             textBox2.Size = new System.Drawing.Size(100, 23);
             textBox2.TabIndex = 2;
-            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // textBox3
             // 
@@ -165,7 +157,6 @@ namespace yazlab
             textBox3.Name = "textBox3";
             textBox3.Size = new System.Drawing.Size(100, 23);
             textBox3.TabIndex = 2;
-            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // textBox4
             // 
@@ -173,7 +164,6 @@ namespace yazlab
             textBox4.Name = "textBox4";
             textBox4.Size = new System.Drawing.Size(100, 23);
             textBox4.TabIndex = 2;
-            textBox4.TextChanged += textBox4_TextChanged;
             // 
             // textBox5
             // 
@@ -181,7 +171,6 @@ namespace yazlab
             textBox5.Name = "textBox5";
             textBox5.Size = new System.Drawing.Size(100, 23);
             textBox5.TabIndex = 2;
-            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // label7
             // 
@@ -191,7 +180,6 @@ namespace yazlab
             label7.Size = new System.Drawing.Size(68, 15);
             label7.TabIndex = 1;
             label7.Text = "User Name:";
-            label7.Click += label7_Click;
             // 
             // label8
             // 
@@ -201,7 +189,6 @@ namespace yazlab
             label8.Size = new System.Drawing.Size(154, 15);
             label8.TabIndex = 1;
             label8.Text = "Student Add/Update/Delete";
-            label8.Click += label8_Click;
             // 
             // label9
             // 
@@ -211,7 +198,6 @@ namespace yazlab
             label9.Size = new System.Drawing.Size(42, 15);
             label9.TabIndex = 1;
             label9.Text = "Name:";
-            label9.Click += label9_Click;
             // 
             // label10
             // 
@@ -221,7 +207,6 @@ namespace yazlab
             label10.Size = new System.Drawing.Size(60, 15);
             label10.TabIndex = 1;
             label10.Text = "Password:";
-            label10.Click += label10_Click;
             // 
             // label11
             // 
@@ -231,7 +216,6 @@ namespace yazlab
             label11.Size = new System.Drawing.Size(57, 15);
             label11.TabIndex = 1;
             label11.Text = "Surname:";
-            label11.Click += label11_Click;
             // 
             // button2
             // 
@@ -251,7 +235,6 @@ namespace yazlab
             button3.TabIndex = 0;
             button3.Text = "Atama Yap";
             button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
             // 
             // label12
             // 
@@ -261,7 +244,6 @@ namespace yazlab
             label12.Size = new System.Drawing.Size(130, 15);
             label12.TabIndex = 1;
             label12.Text = "Otomatik Atama Ekranı";
-            label12.Click += label12_Click;
             // 
             // button4
             // 
@@ -311,7 +293,6 @@ namespace yazlab
             label13.Size = new System.Drawing.Size(143, 15);
             label13.TabIndex = 1;
             label13.Text = "Otomatik Öğrenci Ekleme";
-            label13.Click += label13_Click;
             // 
             // label20
             // 
@@ -321,7 +302,6 @@ namespace yazlab
             label20.Size = new System.Drawing.Size(93, 15);
             label20.TabIndex = 1;
             label20.Text = "Choose Teacher:";
-            label20.Click += label20_Click;
             // 
             // button10
             // 
@@ -341,7 +321,6 @@ namespace yazlab
             label17.Size = new System.Drawing.Size(38, 15);
             label17.TabIndex = 1;
             label17.Text = "Code:";
-            label17.Click += label17_Click;
             // 
             // label19
             // 
@@ -351,7 +330,6 @@ namespace yazlab
             label19.Size = new System.Drawing.Size(42, 15);
             label19.TabIndex = 1;
             label19.Text = "Name:";
-            label19.Click += label19_Click;
             // 
             // label16
             // 
@@ -361,7 +339,6 @@ namespace yazlab
             label16.Size = new System.Drawing.Size(93, 15);
             label16.TabIndex = 1;
             label16.Text = "Choose Teacher:";
-            label16.Click += label16_Click;
             // 
             // label15
             // 
@@ -371,7 +348,6 @@ namespace yazlab
             label15.Size = new System.Drawing.Size(69, 15);
             label15.TabIndex = 1;
             label15.Text = "Course Add";
-            label15.Click += label15_Click;
             // 
             // comboBox1
             // 
@@ -380,7 +356,6 @@ namespace yazlab
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(121, 23);
             comboBox1.TabIndex = 55;
-            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged_1;
             // 
             // comboBox2
             // 
@@ -408,7 +383,6 @@ namespace yazlab
             label18.Size = new System.Drawing.Size(94, 15);
             label18.TabIndex = 1;
             label18.Text = "Choose Student:";
-            label18.Click += label18_Click;
             // 
             // textBox6
             // 
@@ -416,7 +390,6 @@ namespace yazlab
             textBox6.Name = "textBox6";
             textBox6.Size = new System.Drawing.Size(100, 23);
             textBox6.TabIndex = 2;
-            textBox6.TextChanged += textBox6_TextChanged;
             // 
             // textBox7
             // 
@@ -424,7 +397,6 @@ namespace yazlab
             textBox7.Name = "textBox7";
             textBox7.Size = new System.Drawing.Size(100, 23);
             textBox7.TabIndex = 2;
-            textBox7.TextChanged += textBox7_TextChanged;
             // 
             // textBox8
             // 
@@ -432,7 +404,6 @@ namespace yazlab
             textBox8.Name = "textBox8";
             textBox8.Size = new System.Drawing.Size(100, 23);
             textBox8.TabIndex = 2;
-            textBox8.TextChanged += textBox8_TextChanged;
             // 
             // textBox9
             // 
@@ -440,7 +411,6 @@ namespace yazlab
             textBox9.Name = "textBox9";
             textBox9.Size = new System.Drawing.Size(100, 23);
             textBox9.TabIndex = 2;
-            textBox9.TextChanged += textBox9_TextChanged;
             // 
             // textBox10
             // 
@@ -448,7 +418,6 @@ namespace yazlab
             textBox10.Name = "textBox10";
             textBox10.Size = new System.Drawing.Size(100, 23);
             textBox10.TabIndex = 2;
-            textBox10.TextChanged += textBox10_TextChanged;
             // 
             // textBox11
             // 
@@ -456,7 +425,6 @@ namespace yazlab
             textBox11.Name = "textBox11";
             textBox11.Size = new System.Drawing.Size(100, 23);
             textBox11.TabIndex = 2;
-            textBox11.TextChanged += textBox11_TextChanged;
             // 
             // buttonBack
             // 
