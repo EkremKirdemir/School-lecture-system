@@ -27,7 +27,7 @@ namespace yazlab
                 }
                 else if (role == "teacher")
                 {
-                    teacherUserControl1.teacherIdSet(3);
+                    teacherUserControl1.teacherIdSet(4);
                     teacherUserControl1.Visible = true;              
                 }
                 else if (role == "admin")

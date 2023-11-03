@@ -361,6 +361,26 @@ namespace yazlab
                 baglanti.Close();
             }
         }
+        private List<Lecture> DeserializeLectures(string jsonData)
+        {
+            return JsonSerializer.Deserialize<List<Lecture>>(jsonData);
+        }
+        public string GetExistingLecturesJson(int teacherId, NpgsqlConnection connection)
+        {
+            string existingLecturesJson = null;
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT lectures FROM teachers WHERE identification_number = @teacherid", connection))
+            {
+                command.Parameters.AddWithValue("teacherid", teacherId);
+                using (NpgsqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        existingLecturesJson = reader["lectures"].ToString();
+                    }
+                }
+            }
+            return existingLecturesJson;
+        }
         public void messagesListBoxUpdate()
         {
             int targetStudentId = (int)messageComboBox.SelectedValue;
@@ -419,8 +439,8 @@ namespace yazlab
         }
         private void messageComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(messageComboBox.SelectedValue!= null)
-            messagesListBoxUpdate();
+            if (messageComboBox.SelectedValue != null)
+                messagesListBoxUpdate();
         }
 
         private void messageSendButton_Click(object sender, EventArgs e)
@@ -488,13 +508,80 @@ namespace yazlab
 
         private void TeacherUserControl_VisibleChanged(object sender, EventArgs e)
         {
-            
+
         }
         public void teacherIdSet(int id)
         {
             teacherId = id;
             comboBoxUpdate();
             messageComboBoxUpdate();
+        }
+
+        private void buttonCourseOptions_Click(object sender, EventArgs e)
+        {
+            baglanti.Open();
+            checkedListBox1.Visible = true;
+            transcripListBox.Visible = false;
+
+            string lecturesJson = GetExistingLecturesJson(teacherId, baglanti);
+
+            if (!string.IsNullOrEmpty(lecturesJson))
+            {
+                List<Lecture> lectures = DeserializeLectures(lecturesJson);
+                var lecturesToAdd = lectures.Where(l => l.status == "0").ToList();
+
+                foreach (var lecture in lecturesToAdd)
+                {
+                    checkedListBox1.Items.Add(lecture.Name);
+                }
+            }
+
+            baglanti.Close();
+        }
+
+        private void buttonAccept_Click(object sender, EventArgs e)
+        {       
+            baglanti.Open();
+            string currentJson = GetExistingLecturesJson(teacherId, baglanti);
+            List<Lecture> lectures = DeserializeLectures(currentJson);
+
+            // Keep track of the indices of the checked items to remove them later.
+            List<int> checkedIndices = new List<int>();
+
+            // Begin a transaction or make sure to handle exceptions and roll back if something fails.
+            try
+            {
+                foreach (int index in checkedListBox1.CheckedIndices)
+                {
+                    // Get the lecture code from the checked item, which is a string.
+                    string checkedLectureCode = (string)checkedListBox1.Items[index];
+
+                    // Find the lecture object that matches the checked code.
+                    var lectureToUpdate = lectures.Find(l => l.Name == checkedLectureCode);
+                    if (lectureToUpdate != null)
+                    {
+                        lectureToUpdate.status = "1";
+                        checkedIndices.Add(index);
+                    }
+                }
+
+                string updatedJson = JsonSerializer.Serialize(lectures);
+                using (NpgsqlCommand cmd = new NpgsqlCommand("UPDATE teachers SET lectures = @lecturesJson WHERE identification_number = @teacherId", baglanti))
+                {
+                    cmd.Parameters.AddWithValue("@lecturesJson", NpgsqlTypes.NpgsqlDbType.Jsonb, updatedJson);
+                    cmd.Parameters.AddWithValue("@teacherId", teacherId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                baglanti.Close();
+            }
+
+            for (int i = checkedIndices.Count - 1; i >= 0; i--)
+            {
+                checkedListBox1.Items.RemoveAt(checkedIndices[i]);
+            }
         }
     }
     public class Rank
@@ -510,5 +597,11 @@ namespace yazlab
     public class Interest
     {
         public string interest_area { get; set; }
+    }
+    public class Lecture
+    {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public string status { get; set; }
     }
 }

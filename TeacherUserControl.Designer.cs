@@ -147,6 +147,7 @@ namespace yazlab
             buttonCourseOptions.TabIndex = 7;
             buttonCourseOptions.Text = "Show My Course Options";
             buttonCourseOptions.UseVisualStyleBackColor = true;
+            buttonCourseOptions.Click += buttonCourseOptions_Click;
             // 
             // buttonDemandCourse
             // 
@@ -192,6 +193,7 @@ namespace yazlab
             buttonAccept.TabIndex = 10;
             buttonAccept.Text = "Accept";
             buttonAccept.UseVisualStyleBackColor = true;
+            buttonAccept.Click += buttonAccept_Click;
             // 
             // groupBox
             // 

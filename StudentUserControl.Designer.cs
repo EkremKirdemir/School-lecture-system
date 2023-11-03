@@ -43,6 +43,11 @@ namespace yazlab
             messagesListBox = new System.Windows.Forms.ListBox();
             messagesComboBox = new System.Windows.Forms.ComboBox();
             buttonBack = new System.Windows.Forms.Button();
+            buttonDemand = new System.Windows.Forms.Button();
+            buttonCancel = new System.Windows.Forms.Button();
+            buttonApproved = new System.Windows.Forms.Button();
+            buttonTeacherDemands = new System.Windows.Forms.Button();
+            buttonAcceptDemand = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -171,11 +176,66 @@ namespace yazlab
             buttonBack.UseVisualStyleBackColor = true;
             buttonBack.Click += buttonBack_Click;
             // 
+            // buttonDemand
+            // 
+            buttonDemand.Location = new System.Drawing.Point(349, 145);
+            buttonDemand.Name = "buttonDemand";
+            buttonDemand.Size = new System.Drawing.Size(75, 23);
+            buttonDemand.TabIndex = 13;
+            buttonDemand.Text = "Demand";
+            buttonDemand.UseVisualStyleBackColor = true;
+            buttonDemand.Click += buttonDemand_Click;
+            // 
+            // buttonCancel
+            // 
+            buttonCancel.Location = new System.Drawing.Point(349, 174);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new System.Drawing.Size(75, 23);
+            buttonCancel.TabIndex = 14;
+            buttonCancel.Text = "Cancel Demand";
+            buttonCancel.UseVisualStyleBackColor = true;
+            buttonCancel.Click += buttonCancel_Click;
+            // 
+            // buttonApproved
+            // 
+            buttonApproved.Location = new System.Drawing.Point(360, 53);
+            buttonApproved.Name = "buttonApproved";
+            buttonApproved.Size = new System.Drawing.Size(104, 40);
+            buttonApproved.TabIndex = 15;
+            buttonApproved.Text = "Show Approved Courses";
+            buttonApproved.UseVisualStyleBackColor = true;
+            buttonApproved.Click += buttonApproved_Click;
+            // 
+            // buttonTeacherDemands
+            // 
+            buttonTeacherDemands.Location = new System.Drawing.Point(365, 100);
+            buttonTeacherDemands.Name = "buttonTeacherDemands";
+            buttonTeacherDemands.Size = new System.Drawing.Size(99, 39);
+            buttonTeacherDemands.TabIndex = 16;
+            buttonTeacherDemands.Text = "Demands From Teachers";
+            buttonTeacherDemands.UseVisualStyleBackColor = true;
+            buttonTeacherDemands.Click += buttonTeacherDemands_Click;
+            // 
+            // buttonAcceptDemand
+            // 
+            buttonAcceptDemand.Location = new System.Drawing.Point(349, 221);
+            buttonAcceptDemand.Name = "buttonAcceptDemand";
+            buttonAcceptDemand.Size = new System.Drawing.Size(75, 23);
+            buttonAcceptDemand.TabIndex = 17;
+            buttonAcceptDemand.Text = "Accept";
+            buttonAcceptDemand.UseVisualStyleBackColor = true;
+            buttonAcceptDemand.Click += buttonAcceptDemand_Click;
+            // 
             // StudentUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(buttonAcceptDemand);
+            Controls.Add(buttonTeacherDemands);
+            Controls.Add(buttonApproved);
+            Controls.Add(buttonCancel);
+            Controls.Add(buttonDemand);
             Controls.Add(buttonBack);
             Controls.Add(messagesComboBox);
             Controls.Add(messagesListBox);
@@ -212,5 +272,10 @@ namespace yazlab
         private System.Windows.Forms.ListBox messagesListBox;
         private System.Windows.Forms.ComboBox messagesComboBox;
         private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Button buttonDemand;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonApproved;
+        private System.Windows.Forms.Button buttonTeacherDemands;
+        private System.Windows.Forms.Button buttonAcceptDemand;
     }
 }
