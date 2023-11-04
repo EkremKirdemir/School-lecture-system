@@ -55,13 +55,15 @@ namespace yazlab
             textBoxInterest = new System.Windows.Forms.TextBox();
             buttonInterest = new System.Windows.Forms.Button();
             buttonback = new System.Windows.Forms.Button();
+            comboBoxLectures = new System.Windows.Forms.ComboBox();
+            buttonDemandMid = new System.Windows.Forms.Button();
             groupBox.SuspendLayout();
             SuspendLayout();
             // 
             // messageComboBox
             // 
             messageComboBox.FormattingEnabled = true;
-            messageComboBox.Location = new System.Drawing.Point(794, 8);
+            messageComboBox.Location = new System.Drawing.Point(828, 6);
             messageComboBox.Name = "messageComboBox";
             messageComboBox.Size = new System.Drawing.Size(238, 23);
             messageComboBox.TabIndex = 0;
@@ -71,14 +73,14 @@ namespace yazlab
             // 
             messageListBox.FormattingEnabled = true;
             messageListBox.ItemHeight = 15;
-            messageListBox.Location = new System.Drawing.Point(794, 37);
+            messageListBox.Location = new System.Drawing.Point(828, 35);
             messageListBox.Name = "messageListBox";
             messageListBox.Size = new System.Drawing.Size(238, 199);
             messageListBox.TabIndex = 1;
             // 
             // messageSendButton
             // 
-            messageSendButton.Location = new System.Drawing.Point(983, 242);
+            messageSendButton.Location = new System.Drawing.Point(1017, 240);
             messageSendButton.Name = "messageSendButton";
             messageSendButton.Size = new System.Drawing.Size(49, 23);
             messageSendButton.TabIndex = 2;
@@ -88,7 +90,7 @@ namespace yazlab
             // 
             // messagesTextBox
             // 
-            messagesTextBox.Location = new System.Drawing.Point(794, 242);
+            messagesTextBox.Location = new System.Drawing.Point(828, 240);
             messagesTextBox.Name = "messagesTextBox";
             messagesTextBox.Size = new System.Drawing.Size(183, 23);
             messagesTextBox.TabIndex = 3;
@@ -129,6 +131,7 @@ namespace yazlab
             buttonDemandedFromYou.TabIndex = 7;
             buttonDemandedFromYou.Text = "Show Demanded Courses From You";
             buttonDemandedFromYou.UseVisualStyleBackColor = true;
+            buttonDemandedFromYou.Click += buttonDemandedFromYou_Click;
             // 
             // buttonShowOther
             // 
@@ -138,6 +141,7 @@ namespace yazlab
             buttonShowOther.TabIndex = 8;
             buttonShowOther.Text = "Show Other Demands";
             buttonShowOther.UseVisualStyleBackColor = true;
+            buttonShowOther.Click += buttonShowOther_Click;
             // 
             // buttonCourseOptions
             // 
@@ -157,6 +161,7 @@ namespace yazlab
             buttonDemandCourse.TabIndex = 7;
             buttonDemandCourse.Text = "Demand Courses";
             buttonDemandCourse.UseVisualStyleBackColor = true;
+            buttonDemandCourse.Click += buttonDemandCourse_Click;
             // 
             // buttonShowTranscript
             // 
@@ -169,25 +174,27 @@ namespace yazlab
             // 
             // buttonDemandSmall
             // 
-            buttonDemandSmall.Location = new System.Drawing.Point(290, 134);
+            buttonDemandSmall.Location = new System.Drawing.Point(290, 162);
             buttonDemandSmall.Name = "buttonDemandSmall";
             buttonDemandSmall.Size = new System.Drawing.Size(90, 34);
             buttonDemandSmall.TabIndex = 10;
             buttonDemandSmall.Text = "Demand";
             buttonDemandSmall.UseVisualStyleBackColor = true;
+            buttonDemandSmall.Click += buttonDemandSmall_Click;
             // 
             // buttonApproveCourse
             // 
-            buttonApproveCourse.Location = new System.Drawing.Point(290, 174);
+            buttonApproveCourse.Location = new System.Drawing.Point(290, 202);
             buttonApproveCourse.Name = "buttonApproveCourse";
             buttonApproveCourse.Size = new System.Drawing.Size(90, 34);
             buttonApproveCourse.TabIndex = 10;
             buttonApproveCourse.Text = "Approve";
             buttonApproveCourse.UseVisualStyleBackColor = true;
+            buttonApproveCourse.Click += buttonApproveCourse_Click;
             // 
             // buttonAccept
             // 
-            buttonAccept.Location = new System.Drawing.Point(290, 214);
+            buttonAccept.Location = new System.Drawing.Point(290, 242);
             buttonAccept.Name = "buttonAccept";
             buttonAccept.Size = new System.Drawing.Size(90, 34);
             buttonAccept.TabIndex = 10;
@@ -204,7 +211,7 @@ namespace yazlab
             groupBox.Controls.Add(buttonAddCriteria);
             groupBox.Controls.Add(comboBoxCriteria);
             groupBox.Controls.Add(textBoxCriteria);
-            groupBox.Location = new System.Drawing.Point(403, 113);
+            groupBox.Location = new System.Drawing.Point(437, 111);
             groupBox.Name = "groupBox";
             groupBox.Size = new System.Drawing.Size(350, 241);
             groupBox.TabIndex = 11;
@@ -235,7 +242,7 @@ namespace yazlab
             // 
             listBoxCriteria.FormattingEnabled = true;
             listBoxCriteria.ItemHeight = 15;
-            listBoxCriteria.Location = new System.Drawing.Point(6, 53);
+            listBoxCriteria.Location = new System.Drawing.Point(6, 51);
             listBoxCriteria.Name = "listBoxCriteria";
             listBoxCriteria.Size = new System.Drawing.Size(217, 139);
             listBoxCriteria.TabIndex = 4;
@@ -301,11 +308,32 @@ namespace yazlab
             buttonback.UseVisualStyleBackColor = true;
             buttonback.Click += buttonback_Click;
             // 
+            // comboBoxLectures
+            // 
+            comboBoxLectures.FormattingEnabled = true;
+            comboBoxLectures.Location = new System.Drawing.Point(290, 123);
+            comboBoxLectures.Name = "comboBoxLectures";
+            comboBoxLectures.Size = new System.Drawing.Size(121, 23);
+            comboBoxLectures.TabIndex = 15;
+            comboBoxLectures.Visible = false;
+            // 
+            // buttonDemandMid
+            // 
+            buttonDemandMid.Location = new System.Drawing.Point(290, 282);
+            buttonDemandMid.Name = "buttonDemandMid";
+            buttonDemandMid.Size = new System.Drawing.Size(90, 33);
+            buttonDemandMid.TabIndex = 16;
+            buttonDemandMid.Text = "Demand";
+            buttonDemandMid.UseVisualStyleBackColor = true;
+            buttonDemandMid.Click += buttonDemandMid_Click;
+            // 
             // TeacherUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(buttonDemandMid);
+            Controls.Add(comboBoxLectures);
             Controls.Add(buttonback);
             Controls.Add(buttonInterest);
             Controls.Add(textBoxInterest);
@@ -326,7 +354,7 @@ namespace yazlab
             Controls.Add(messageListBox);
             Controls.Add(messageComboBox);
             Name = "TeacherUserControl";
-            Size = new System.Drawing.Size(1035, 410);
+            Size = new System.Drawing.Size(1069, 410);
             Load += TeacherUserControl_Load;
             VisibleChanged += TeacherUserControl_VisibleChanged;
             groupBox.ResumeLayout(false);
@@ -363,5 +391,7 @@ namespace yazlab
         private System.Windows.Forms.TextBox textBoxInterest;
         private System.Windows.Forms.Button buttonInterest;
         private System.Windows.Forms.Button buttonback;
+        private System.Windows.Forms.ComboBox comboBoxLectures;
+        private System.Windows.Forms.Button buttonDemandMid;
     }
 }

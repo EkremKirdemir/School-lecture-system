@@ -489,7 +489,7 @@ namespace yazlab
             baglanti.Close();
             return teacherId;
         }
-        private void InsertDemand(string jsonDemand, int studentId)
+        public void InsertDemand(string jsonDemand, int studentId)
         {
             baglanti.Open();
             // Retrieve the current JSON data
@@ -557,9 +557,10 @@ namespace yazlab
             return demands.Any(d => d.DemandedCourseCode == newDemand.DemandedCourseCode &&
                                     d.DemandedCourseName == newDemand.DemandedCourseName &&
                                     d.TeacherID == newDemand.TeacherID &&
-                                    d.DemandStatus == newDemand.DemandStatus);
+                                    d.DemandStatus == newDemand.DemandStatus &&
+                                    d.Demander == newDemand.Demander);
         }
-        private string GetTeacherNameSurnameById(int teacherId)
+        public string GetTeacherNameSurnameById(int teacherId)
         {
             baglanti.Open();
             string sql = "SELECT name, surname FROM teachers WHERE identification_number = @teacherId";
@@ -580,7 +581,7 @@ namespace yazlab
             baglanti.Close();
             return "";
         }
-        private List<Demand> GetDemandsForStudent(int studentId)
+        public List<Demand> GetDemandsForStudent(int studentId)
         {
             baglanti.Open();
             string sql = "SELECT agreement_status FROM students WHERE student_id = @studentId";

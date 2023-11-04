@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace yazlab
 {
@@ -30,6 +31,7 @@ namespace yazlab
         List<Criteria> criterias = new List<Criteria>();
         List<Rank> ranks = new List<Rank>();
         int teacherId;
+        StudentUserControl usercontrol1 = new StudentUserControl();
 
         void messageComboBoxUpdate()
         {
@@ -71,12 +73,15 @@ namespace yazlab
             foreach (int id in studentIds)
             {
                 var studentCourses = FetchCourseData(id);
-                foreach (var course in studentCourses)
+                if (studentCourses.Count != 0)
                 {
-                    if (!courses.Any(c => c.Code == course.Code))
+                    foreach (var course in studentCourses)
                     {
-                        courses.Add(course);
-                        comboBoxCriteria.Items.Add(course.Name);
+                        if (!courses.Any(c => c.Code == course.Code))
+                        {
+                            courses.Add(course);
+                            comboBoxCriteria.Items.Add(course.Name);
+                        }
                     }
                 }
             }
@@ -136,6 +141,7 @@ namespace yazlab
         }
         private void studentsComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            checkedListBox1.Visible = false;
             if (studentsComboBox.SelectedIndex != 0 && studentsComboBox.SelectedValue != null)
             {
                 transcripListBox.Items.Clear();
@@ -365,10 +371,12 @@ namespace yazlab
         {
             return JsonSerializer.Deserialize<List<Lecture>>(jsonData);
         }
-        public string GetExistingLecturesJson(int teacherId, NpgsqlConnection connection)
+        public string GetExistingLecturesJson(int teacherId)
         {
+            
+               baglanti.Open();
             string existingLecturesJson = null;
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT lectures FROM teachers WHERE identification_number = @teacherid", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT lectures FROM teachers WHERE identification_number = @teacherid", baglanti))
             {
                 command.Parameters.AddWithValue("teacherid", teacherId);
                 using (NpgsqlDataReader reader = command.ExecuteReader())
@@ -379,6 +387,7 @@ namespace yazlab
                     }
                 }
             }
+            baglanti.Close();
             return existingLecturesJson;
         }
         public void messagesListBoxUpdate()
@@ -519,11 +528,14 @@ namespace yazlab
 
         private void buttonCourseOptions_Click(object sender, EventArgs e)
         {
-            baglanti.Open();
+            buttonApproveCourse.Enabled = false;
+            buttonAccept.Enabled = true;
+            buttonDemandSmall.Enabled = false;
+            buttonDemandMid.Enabled = false;
             checkedListBox1.Visible = true;
             transcripListBox.Visible = false;
 
-            string lecturesJson = GetExistingLecturesJson(teacherId, baglanti);
+            string lecturesJson = GetExistingLecturesJson(teacherId);
 
             if (!string.IsNullOrEmpty(lecturesJson))
             {
@@ -536,13 +548,13 @@ namespace yazlab
                 }
             }
 
-            baglanti.Close();
+
         }
 
         private void buttonAccept_Click(object sender, EventArgs e)
-        {       
+        {
+            string currentJson = GetExistingLecturesJson(teacherId);
             baglanti.Open();
-            string currentJson = GetExistingLecturesJson(teacherId, baglanti);
             List<Lecture> lectures = DeserializeLectures(currentJson);
 
             // Keep track of the indices of the checked items to remove them later.
@@ -582,6 +594,311 @@ namespace yazlab
             {
                 checkedListBox1.Items.RemoveAt(checkedIndices[i]);
             }
+        }
+
+        private void buttonDemandSmall_Click(object sender, EventArgs e)
+        {
+            List<object> itemsToRemove = new List<object>();
+            foreach (object item in checkedListBox1.CheckedItems)
+            {
+                string itemText = item.ToString();
+                string[] parts = itemText.Split(new char[] { ' ' }, 7); // Splits into code, name, teacher name, teacher surname
+                if (parts.Length < 4) continue; // Skip if the split did not work as expected
+                string studentid = parts[2];
+                string courseCode = parts[4];
+                string courseName = parts[5];
+
+
+                if (teacherId == -1) continue; // Skip if teacher ID not found
+
+                UpdateDemanderStatus(teacherId, courseCode, courseName, Int32.Parse(studentid), "teacher", "Demanded");
+                itemsToRemove.Add(item);
+            }
+            foreach (var item in itemsToRemove)
+            {
+                checkedListBox1.Items.Remove(item);
+            }
+        }
+        public void UpdateDemanderStatus(int teacherId, string demandedCourseCode, string demandedCourseName, int studentid, string demander, string demandstatus)
+        {
+
+            baglanti.Open();
+
+            // Retrieve the current JSON data
+            string sqlSelect = "SELECT agreement_status FROM students WHERE student_id = @studentId";
+            using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
+            {
+                selectCommand.Parameters.AddWithValue("@studentId", studentid);
+
+                var agreementStatusJson = (string)selectCommand.ExecuteScalar();
+                if (!string.IsNullOrEmpty(agreementStatusJson))
+                {
+                    var agreementStatus = JsonSerializer.Deserialize<List<Demand>>(agreementStatusJson);
+
+                    // Find the index of the demand to update
+                    var indexToUpdate = agreementStatus.FindIndex(d =>
+                        d.Demander == "student" &&
+                        d.TeacherID == teacherId &&
+                        d.DemandedCourseCode == demandedCourseCode &&
+                        d.DemandedCourseName == demandedCourseName &&
+                        d.DemandStatus == "Demanded");
+
+                    if (indexToUpdate != -1)
+                    {
+                        // Update the Demander property
+                        agreementStatus[indexToUpdate].DemandStatus = demandstatus;
+
+                        // Serialize the list back to a JSON string
+                        var updatedJsonStr = JsonSerializer.Serialize(agreementStatus);
+
+                        // Update the database
+                        string sqlUpdate = "UPDATE students SET agreement_status = @updatedJson WHERE student_id = @studentId";
+                        using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
+                        {
+                            // Explicitly specify the parameter type as jsonb
+                            var param = new NpgsqlParameter("@updatedJson", NpgsqlDbType.Jsonb)
+                            {
+                                Value = updatedJsonStr
+                            };
+                            updateCommand.Parameters.Add(param);
+                            updateCommand.Parameters.AddWithValue("@studentId", studentid);
+
+                            updateCommand.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+
+            baglanti.Close();
+
+        }
+
+
+        private void buttonDemandCourse_Click(object sender, EventArgs e)
+        {
+            transcripListBox.Items.Clear();
+            checkedListBox1.Items.Clear();
+            transcripListBox.Visible = true;
+            checkedListBox1.Visible = false;
+            List<int> studentIds = new List<int>();
+            List<string> studentnames = new List<string>();
+            List<string> studentSurnames = new List<string>();
+
+            baglanti.Open();
+            string sqlQuery = "SELECT student_id, name, surname FROM students";
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sqlQuery, baglanti))
+            {
+                using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        studentIds.Add(reader.GetInt32(0)); // Gets the student_id
+
+                        // Check if name is not null before adding
+                        if (!reader.IsDBNull(1))
+                        {
+                            studentnames.Add(reader.GetString(1)); // Gets the name
+                        }
+                        else
+                        {
+                            studentnames.Add(string.Empty); // Adds an empty string if name is null
+                        }
+
+                        // Check if surname is not null before adding
+                        if (!reader.IsDBNull(2))
+                        {
+                            studentSurnames.Add(reader.GetString(2)); // Gets the surname
+                        }
+                        else
+                        {
+                            studentSurnames.Add(string.Empty); // Adds an empty string if surname is null
+                        }
+                    }
+                }
+            }
+            baglanti.Close();
+            for (int i = 0; i < studentIds.Count; i++)
+            {
+                transcripListBox.Items.Add(studentIds[i].ToString() + " " + studentnames[i] + " " + studentSurnames[i]);
+            }
+
+            buttonApproveCourse.Enabled = false;
+            buttonAccept.Enabled = false;
+            buttonDemandSmall.Enabled = false;
+            buttonDemandMid.Enabled = true;
+            comboBoxLectures.Visible = true;
+            baglanti.Close();
+            string lecturesJson = GetExistingLecturesJson(teacherId);
+
+            if (!string.IsNullOrEmpty(lecturesJson))
+            {
+                List<Lecture> lectures = DeserializeLectures(lecturesJson);
+                var lecturesToAdd = lectures.Where(l => l.status == "1").ToList();
+
+                foreach (var lecture in lecturesToAdd)
+                {
+                    comboBoxLectures.Items.Add(lecture.Code + " " + lecture.Name);
+                }
+            }
+        }
+
+        private void buttonDemandedFromYou_Click(object sender, EventArgs e)
+        {
+            checkedListBox1.Visible = true;
+            checkedListBox1.Items.Clear();
+            transcripListBox.Visible = false;
+            List<int> studentIds = new List<int>();
+
+            baglanti.Open();
+            string sqlQuery = "SELECT student_id FROM students";
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sqlQuery, baglanti))
+            {
+                using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        studentIds.Add(reader.GetInt32(0));
+                    }
+                }
+            }
+            baglanti.Close();
+
+            foreach (int studentID in studentIds)
+            {
+                // Get a list of Demand objects for each student
+                List<Demand> demands = usercontrol1.GetDemandsForStudent(studentID);
+                if (demands != null && demands.Count > 0)
+                {
+                    foreach (var demand in demands)
+                    {
+                        if (demand.DemandStatus == "Demanded" && demand.Demander == "student" && demand.TeacherID == teacherId)
+                        {
+                            //string teacherDetails = usercontrol1.GetTeacherNameSurnameById(demand.TeacherID);
+                            string displayText = $"{demand.DemandedCourseCode} {demand.DemandedCourseName}";
+                            // You might want to include some identifier for the student as well:
+                            displayText = $"Student ID: {studentID} - " + displayText;
+                            checkedListBox1.Items.Add(displayText);
+                        }
+                    }
+                }
+                // Else block can be used if no demands are found for a student
+                else
+                {
+                    // Possibly add logic here if no demands are found
+                }
+            }
+            buttonApproveCourse.Enabled = true;
+            buttonAccept.Enabled = false;
+            buttonDemandSmall.Enabled = false;
+            buttonDemandMid.Enabled = false;
+        }
+
+        public bool sameExists()
+        {
+            return true;
+        }
+        private void buttonShowOther_Click(object sender, EventArgs e)
+        {
+            checkedListBox1.Items.Clear();
+            checkedListBox1.Visible = true;
+            transcripListBox.Visible = false;
+            List<int> studentIds = new List<int>();
+
+            baglanti.Open();
+            string sqlQuery = "SELECT student_id FROM students";
+            using (NpgsqlCommand cmd = new NpgsqlCommand(sqlQuery, baglanti))
+            {
+                using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        studentIds.Add(reader.GetInt32(0));
+                    }
+                }
+            }
+            baglanti.Close();
+
+            foreach (int studentID in studentIds)
+            {
+                // Get a list of Demand objects for each student
+                List<Demand> demands = usercontrol1.GetDemandsForStudent(studentID);
+                if (demands != null && demands.Count > 0)
+                {
+                    foreach (var demand in demands)
+                    {
+                        if (demand.DemandStatus == "Demanded" && demand.Demander != "teacher")
+                        {
+                            //string teacherDetails = usercontrol1.GetTeacherNameSurnameById(demand.TeacherID);
+                            string displayText = $"{demand.DemandedCourseCode} {demand.DemandedCourseName}";
+                            // You might want to include some identifier for the student as well:
+                            displayText = $"Student ID: {studentID} - " + displayText;
+                            checkedListBox1.Items.Add(displayText);
+                        }
+                    }
+                }
+                // Else block can be used if no demands are found for a student
+                else
+                {
+                    // Possibly add logic here if no demands are found
+                }
+            }
+            buttonApproveCourse.Enabled = false;
+            buttonAccept.Enabled = false;
+            buttonDemandSmall.Enabled = true;
+            buttonDemandMid.Enabled = false;
+        }
+
+        private void buttonApproveCourse_Click(object sender, EventArgs e)
+        {
+            List<object> itemsToRemove = new List<object>();
+            foreach (object item in checkedListBox1.CheckedItems)
+            {
+                string itemText = item.ToString();
+                string[] parts = itemText.Split(new char[] { ' ' }, 7); // Splits into code, name, teacher name, teacher surname
+                if (parts.Length < 4) continue; // Skip if the split did not work as expected
+                string studentid = parts[2];
+                string courseCode = parts[4];
+                string courseName = parts[5];
+
+
+                if (teacherId == -1) continue; // Skip if teacher ID not found
+
+                UpdateDemanderStatus(teacherId, courseCode, courseName, Int32.Parse(studentid), "student", "Approved");
+                itemsToRemove.Add(item);
+            }
+            foreach (var item in itemsToRemove)
+            {
+                checkedListBox1.Items.Remove(item);
+            }
+        }
+
+        private void buttonDemandMid_Click(object sender, EventArgs e)
+        {
+           
+            if (comboBoxLectures.SelectedItem == null)
+                MessageBox.Show("Select Lecture");
+            else if(transcripListBox.SelectedItem == null)
+                MessageBox.Show("Select Student");
+            else
+            {
+                
+                string[] parts = comboBoxLectures.SelectedItem.ToString().Split(new char[] { ' ' }, 2); 
+                string courseCode = parts[0];
+                string courseName = parts[1];
+                string[] parts1 = transcripListBox.SelectedItem.ToString().Split(new char[] { ' ' }, 2);
+                string studentid = parts1[0];
+            Demand demand = new Demand
+            {
+                Demander = "teacher",
+                DemandedCourseCode = courseCode,
+                DemandedCourseName = courseName,
+                DemandStatus = "Demanded",
+                TeacherID = teacherId
+            };
+            string jsonDemand = JsonSerializer.Serialize(demand);
+            usercontrol1.InsertDemand(jsonDemand, Int32.Parse(studentid));
+            }
+
         }
     }
     public class Rank
