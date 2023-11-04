@@ -48,6 +48,8 @@ namespace yazlab
             buttonApproved = new System.Windows.Forms.Button();
             buttonTeacherDemands = new System.Windows.Forms.Button();
             buttonAcceptDemand = new System.Windows.Forms.Button();
+            comboBox1 = new System.Windows.Forms.ComboBox();
+            label2 = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
             // openFileDialog1
@@ -56,9 +58,9 @@ namespace yazlab
             // 
             // usTranscript
             // 
-            usTranscript.Location = new System.Drawing.Point(17, 52);
+            usTranscript.Location = new System.Drawing.Point(128, 4);
             usTranscript.Name = "usTranscript";
-            usTranscript.Size = new System.Drawing.Size(113, 41);
+            usTranscript.Size = new System.Drawing.Size(105, 41);
             usTranscript.TabIndex = 0;
             usTranscript.Text = "Upload/Show Transcript";
             usTranscript.UseVisualStyleBackColor = true;
@@ -76,7 +78,7 @@ namespace yazlab
             // 
             // demandCourse
             // 
-            demandCourse.Location = new System.Drawing.Point(136, 53);
+            demandCourse.Location = new System.Drawing.Point(17, 60);
             demandCourse.Name = "demandCourse";
             demandCourse.Size = new System.Drawing.Size(105, 41);
             demandCourse.TabIndex = 2;
@@ -103,9 +105,9 @@ namespace yazlab
             // 
             // sdCourses
             // 
-            sdCourses.Location = new System.Drawing.Point(248, 53);
+            sdCourses.Location = new System.Drawing.Point(128, 60);
             sdCourses.Name = "sdCourses";
-            sdCourses.Size = new System.Drawing.Size(106, 40);
+            sdCourses.Size = new System.Drawing.Size(105, 41);
             sdCourses.TabIndex = 5;
             sdCourses.Text = "Show Demanded Courses";
             sdCourses.UseVisualStyleBackColor = true;
@@ -113,7 +115,7 @@ namespace yazlab
             // 
             // add
             // 
-            add.Location = new System.Drawing.Point(135, 100);
+            add.Location = new System.Drawing.Point(349, 316);
             add.Name = "add";
             add.Size = new System.Drawing.Size(106, 23);
             add.TabIndex = 6;
@@ -123,7 +125,7 @@ namespace yazlab
             // 
             // Delete
             // 
-            Delete.Location = new System.Drawing.Point(249, 100);
+            Delete.Location = new System.Drawing.Point(461, 316);
             Delete.Name = "Delete";
             Delete.Size = new System.Drawing.Size(105, 23);
             Delete.TabIndex = 7;
@@ -133,7 +135,7 @@ namespace yazlab
             // 
             // sendButton
             // 
-            sendButton.Location = new System.Drawing.Point(678, 288);
+            sendButton.Location = new System.Drawing.Point(813, 295);
             sendButton.Name = "sendButton";
             sendButton.Size = new System.Drawing.Size(75, 23);
             sendButton.TabIndex = 8;
@@ -143,7 +145,7 @@ namespace yazlab
             // 
             // messageTextBox
             // 
-            messageTextBox.Location = new System.Drawing.Point(545, 288);
+            messageTextBox.Location = new System.Drawing.Point(680, 295);
             messageTextBox.Name = "messageTextBox";
             messageTextBox.Size = new System.Drawing.Size(127, 23);
             messageTextBox.TabIndex = 9;
@@ -152,7 +154,7 @@ namespace yazlab
             // 
             messagesListBox.FormattingEnabled = true;
             messagesListBox.ItemHeight = 15;
-            messagesListBox.Location = new System.Drawing.Point(545, 93);
+            messagesListBox.Location = new System.Drawing.Point(680, 100);
             messagesListBox.Name = "messagesListBox";
             messagesListBox.Size = new System.Drawing.Size(208, 184);
             messagesListBox.TabIndex = 10;
@@ -160,7 +162,7 @@ namespace yazlab
             // messagesComboBox
             // 
             messagesComboBox.FormattingEnabled = true;
-            messagesComboBox.Location = new System.Drawing.Point(545, 53);
+            messagesComboBox.Location = new System.Drawing.Point(680, 60);
             messagesComboBox.Name = "messagesComboBox";
             messagesComboBox.Size = new System.Drawing.Size(208, 23);
             messagesComboBox.TabIndex = 11;
@@ -178,7 +180,7 @@ namespace yazlab
             // 
             // buttonDemand
             // 
-            buttonDemand.Location = new System.Drawing.Point(349, 145);
+            buttonDemand.Location = new System.Drawing.Point(35, 116);
             buttonDemand.Name = "buttonDemand";
             buttonDemand.Size = new System.Drawing.Size(75, 23);
             buttonDemand.TabIndex = 13;
@@ -188,7 +190,7 @@ namespace yazlab
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new System.Drawing.Point(349, 174);
+            buttonCancel.Location = new System.Drawing.Point(143, 116);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new System.Drawing.Size(75, 23);
             buttonCancel.TabIndex = 14;
@@ -198,9 +200,9 @@ namespace yazlab
             // 
             // buttonApproved
             // 
-            buttonApproved.Location = new System.Drawing.Point(360, 53);
+            buttonApproved.Location = new System.Drawing.Point(351, 60);
             buttonApproved.Name = "buttonApproved";
-            buttonApproved.Size = new System.Drawing.Size(104, 40);
+            buttonApproved.Size = new System.Drawing.Size(105, 41);
             buttonApproved.TabIndex = 15;
             buttonApproved.Text = "Show Approved Courses";
             buttonApproved.UseVisualStyleBackColor = true;
@@ -208,9 +210,9 @@ namespace yazlab
             // 
             // buttonTeacherDemands
             // 
-            buttonTeacherDemands.Location = new System.Drawing.Point(365, 100);
+            buttonTeacherDemands.Location = new System.Drawing.Point(240, 60);
             buttonTeacherDemands.Name = "buttonTeacherDemands";
-            buttonTeacherDemands.Size = new System.Drawing.Size(99, 39);
+            buttonTeacherDemands.Size = new System.Drawing.Size(105, 41);
             buttonTeacherDemands.TabIndex = 16;
             buttonTeacherDemands.Text = "Demands From Teachers";
             buttonTeacherDemands.UseVisualStyleBackColor = true;
@@ -218,7 +220,7 @@ namespace yazlab
             // 
             // buttonAcceptDemand
             // 
-            buttonAcceptDemand.Location = new System.Drawing.Point(349, 221);
+            buttonAcceptDemand.Location = new System.Drawing.Point(256, 116);
             buttonAcceptDemand.Name = "buttonAcceptDemand";
             buttonAcceptDemand.Size = new System.Drawing.Size(75, 23);
             buttonAcceptDemand.TabIndex = 17;
@@ -226,11 +228,31 @@ namespace yazlab
             buttonAcceptDemand.UseVisualStyleBackColor = true;
             buttonAcceptDemand.Click += buttonAcceptDemand_Click;
             // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new System.Drawing.Point(351, 206);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new System.Drawing.Size(121, 23);
+            comboBox1.TabIndex = 18;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(351, 188);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(78, 15);
+            label2.TabIndex = 19;
+            label2.Text = "Interest Areas";
+            // 
             // StudentUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             AutoSize = true;
+            Controls.Add(label2);
+            Controls.Add(comboBox1);
             Controls.Add(buttonAcceptDemand);
             Controls.Add(buttonTeacherDemands);
             Controls.Add(buttonApproved);
@@ -250,7 +272,7 @@ namespace yazlab
             Controls.Add(listBox1);
             Controls.Add(usTranscript);
             Name = "StudentUserControl";
-            Size = new System.Drawing.Size(825, 332);
+            Size = new System.Drawing.Size(911, 370);
             Load += StudentUserControl_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -277,5 +299,7 @@ namespace yazlab
         private System.Windows.Forms.Button buttonApproved;
         private System.Windows.Forms.Button buttonTeacherDemands;
         private System.Windows.Forms.Button buttonAcceptDemand;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label2;
     }
 }

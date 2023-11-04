@@ -18,6 +18,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Globalization;
 using Spire.Pdf.Grid;
+using Newtonsoft.Json.Linq;
 
 namespace yazlab
 {
@@ -101,61 +102,57 @@ namespace yazlab
             PdfDocument pdfDocument = new PdfDocument();
             pdfDocument.LoadFromFile(pdfFilePath);
 
+            // Extract all course data first before opening the connection
+            List<dynamic> allCourseData = new List<dynamic>();
             foreach (PdfPageBase pdfPage in pdfDocument.Pages)
             {
                 string pageText = pdfPage.ExtractText();
                 List<CourseData> courseData = SplitTranscript(pageText);
-                baglanti.Open();
-                double gpa = gpaList[gpaList.Count - 1];
-                string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=49";
-                using (NpgsqlCommand updateCommand = new NpgsqlCommand(gpaUpdate, baglanti))
+                allCourseData.AddRange(courseData.Select(course => new
                 {
-                    updateCommand.Parameters.AddWithValue("@gpa", gpa);
-                    updateCommand.ExecuteNonQuery();
-                }
-                baglanti.Close();
-                foreach (CourseData course in courseData)
-                {
-                    listBox1.Items.Add(course.Code + "   " + course.Name + "   " + course.Credit);
-                    var jsonCourse = new
-                    {
-                        Code = course.Code,
-                        Name = course.Name,
-                        Credit = course.Credit
-                    };
-                    baglanti.Open();
-
-                    string sqlSelect = "SELECT transcript FROM students WHERE student_id=49";
-
-                    using (NpgsqlCommand selectCommand = new NpgsqlCommand(sqlSelect, baglanti))
-                    {
-                        string existingJsonData = selectCommand.ExecuteScalar() as string;
-
-                        if (existingJsonData == null)
-                        {
-                            existingJsonData = "[]";
-                        }
-
-                        var existingData = JsonSerializer.Deserialize<List<dynamic>>(existingJsonData);
-
-                        existingData.Add(jsonCourse);
-
-                        string updatedJsonStr = JsonSerializer.Serialize(existingData);
-
-                        string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=49";
-
-                        using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
-                        {
-                            updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb));
-                            updateCommand.Parameters["@updated_json"].Value = updatedJsonStr;
-                            updateCommand.ExecuteNonQuery();
-                        }
-                        baglanti.Close();
-                    }
-                }
+                    Code = course.Code,
+                    Name = course.Name,
+                    Credit = course.Credit
+                }));
             }
 
+            // Assuming gpaList has been populated with the GPAs from the transcript
+            double gpa = gpaList.Last();
+
+            // Open the connection only once for the entire update process
+            baglanti.Open();
+
+            // Update the GPA
+            string gpaUpdate = "UPDATE students SET gpa = @gpa WHERE student_id=@studentid";
+            using (NpgsqlCommand updateCommand = new NpgsqlCommand(gpaUpdate, baglanti))
+            {
+                updateCommand.Parameters.AddWithValue("@gpa", gpa);
+                updateCommand.Parameters.AddWithValue("@studentid", studentid); // Ensure studentId is defined
+                updateCommand.ExecuteNonQuery();
+            }
+
+            // Serialize the entire course data list to JSON
+            string updatedJsonStr = JsonSerializer.Serialize(allCourseData);
+
+            // Update the transcript
+            string sqlUpdate = "UPDATE students SET transcript = @updated_json WHERE student_id=@studentid";
+            using (NpgsqlCommand updateCommand = new NpgsqlCommand(sqlUpdate, baglanti))
+            {
+                updateCommand.Parameters.Add(new NpgsqlParameter("@updated_json", NpgsqlDbType.Jsonb) { Value = updatedJsonStr });
+                updateCommand.Parameters.AddWithValue("@studentid", studentid); // Ensure studentId is defined
+                updateCommand.ExecuteNonQuery();
+            }
+
+            // Close the connection after all updates are done
+            baglanti.Close();
+
+            // Update the listBox with the new course data
+            foreach (var course in allCourseData)
+            {
+                listBox1.Items.Add(course.Code + "   " + course.Name + "   " + course.Credit);
+            }
         }
+
         private void usTranscript_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -173,6 +170,7 @@ namespace yazlab
                     OCR(selectedFilePath);
                 }
             }
+            usTranscript.Enabled = false;
         }
         private List<Lecture> DeserializeLectures(string jsonData)
         {
@@ -217,6 +215,9 @@ namespace yazlab
 
         private void demandCourse_Click(object sender, EventArgs e)
         {
+            buttonCancel.Enabled = false;
+            buttonAcceptDemand.Enabled = false;
+            buttonDemand.Enabled = true;
             checkedListBox1.Visible = true;
             checkedListBox1.Items.Clear();
             List<int> teacherIds = GetAllTeacherİds();
@@ -253,6 +254,9 @@ namespace yazlab
 
         private void sdCourses_Click(object sender, EventArgs e)
         {
+            buttonCancel.Enabled = true;
+            buttonAcceptDemand.Enabled = false;
+            buttonDemand.Enabled = false;
             checkedListBox1.Visible = true;
             int studentID = studentid;
             checkedListBox1.Items.Clear();
@@ -417,12 +421,6 @@ namespace yazlab
             }
             baglanti.Close();
             messagesListBoxUpdate();
-        }
-        public void studentIdSet(int id)
-        {
-            studentid = id;
-            messageComboboxUpdate();
-
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -724,6 +722,9 @@ namespace yazlab
 
         private void buttonApproved_Click(object sender, EventArgs e)
         {
+            buttonCancel.Enabled = false;
+            buttonAcceptDemand.Enabled = false;
+            buttonDemand.Enabled = false;
             checkedListBox1.Visible = true;
             int studentID = studentid;
             checkedListBox1.Items.Clear();
@@ -746,6 +747,9 @@ namespace yazlab
 
         private void buttonTeacherDemands_Click(object sender, EventArgs e)
         {
+            buttonCancel.Enabled = false;
+            buttonAcceptDemand.Enabled = true;
+            buttonDemand.Enabled = false;
             checkedListBox1.Visible = true;
             checkedListBox1.Items.Clear();
             checkedListBox1.Visible = true;
@@ -773,26 +777,134 @@ namespace yazlab
         {
 
         }
+        private void getinterest_area()
+        {
+            comboBox1.Items.Clear();
+            baglanti.Open();
+
+            string query = "SELECT interest_areas FROM teachers";
+
+            using (NpgsqlCommand command = new NpgsqlCommand(query, baglanti))
+            {
+                using (NpgsqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (!reader.IsDBNull(0))
+                        {
+                            string jsonbData = reader.GetString(0); // JSONB verisini metin olarak al
+
+                            // Çift tırnak işaretleri arasındaki içeriği alın
+                            MatchCollection matches = Regex.Matches(jsonbData, "\"(.*?)\"");
+
+                            // Her bir eşleşmeyi ComboBox'a ekleyin
+                            foreach (Match match in matches)
+                            {
+                                string itemText = match.Groups[1].Value;
+                                if (itemText != "interest_area")
+                                    comboBox1.Items.Add(itemText);
+                            }
+                        }
+
+                    }
+                }
+            }
+            baglanti.Close();
+        }
+
+        void interestAreaCheck()
+        {
+
+            // Clear existing items from the list box
+            listBox1.Items.Clear();
+            listBox1.Visible = true;
+            checkedListBox1.Visible = false;
+
+            // Selected interest area from ComboBox1
+            string selectedInterestArea = comboBox1.Text;
+            if (string.IsNullOrWhiteSpace(selectedInterestArea))
+            {
+                // Optionally handle case when no interest area is selected
+                return;
+            }
+
+            baglanti.Open();
+            // Select teachers that have the selected interest area
+            string teacherQuery = "SELECT identification_number, name, surname, lectures FROM teachers WHERE interest_areas::text LIKE @interestAreaPattern";
+            using (NpgsqlCommand teacherCommand = new NpgsqlCommand(teacherQuery, baglanti))
+            {
+                // We use a pattern to match the JSONB array element
+                teacherCommand.Parameters.AddWithValue("@interestAreaPattern", $"%\"{selectedInterestArea}\"%");
+
+                using (NpgsqlDataReader teacherReader = teacherCommand.ExecuteReader())
+                {
+                    while (teacherReader.Read())
+                    {
+                        string teacherId = teacherReader["identification_number"].ToString();
+                        string teacherName = teacherReader["name"].ToString();
+                        string teacherSurname = teacherReader["surname"].ToString();
+                        if (!teacherReader.IsDBNull(3)) // Assuming index 3 is the lectures column
+                        {
+                            string jsonbLectures = teacherReader.GetString(3);
+                            JArray jsonArray = JArray.Parse(jsonbLectures);
+
+                            foreach (JObject course in jsonArray)
+                            {
+                                string courseCode = course["Code"].ToString();
+                                string courseName = course["Name"].ToString();
+                                string courseStatus = course["status"].ToString();
+
+                                // We only add courses with status "0"
+                                if (courseStatus == "0")
+                                {
+                                    string displayText = $"{courseCode} {courseName} {teacherName} {teacherSurname}";
+                                    listBox1.Items.Add(displayText);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            baglanti.Close();
+        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            getinterest_area();
+            interestAreaCheck();
+        }
+        public void studentIdSet(int id)
+        {
+            studentid = id;
+            messageComboboxUpdate();
+            getinterest_area();
+            buttonCancel.Enabled = false;
+            buttonAcceptDemand.Enabled = false;
+            buttonDemand.Enabled = false;
+
+        }
+
     }
 
-    public class CourseData
-    {
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public string Credit { get; set; }
+        public class CourseData
+        {
+            public string Code { get; set; }
+            public string Name { get; set; }
+            public string Credit { get; set; }
+        }
+        public class Content
+        {
+            public int StudentId { get; set; }
+            public string Message { get; set; }
+            public int Sent { get; set; }
+        }
+        public class Demand
+        {
+            public string Demander { get; set; }
+            public string DemandedCourseCode { get; set; }
+            public string DemandedCourseName { get; set; }
+            public string DemandStatus { get; set; }
+            public int TeacherID { get; set; }
+        }
+
     }
-    public class Content
-    {
-        public int StudentId { get; set; }
-        public string Message { get; set; }
-        public int Sent { get; set; }
-    }
-    public class Demand
-    {
-        public string Demander { get; set; }
-        public string DemandedCourseCode { get; set; }
-        public string DemandedCourseName { get; set; }
-        public string DemandStatus { get; set; }
-        public int TeacherID { get; set; }
-    }
-}
