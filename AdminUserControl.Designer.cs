@@ -71,6 +71,8 @@ namespace yazlab
             textBox10 = new System.Windows.Forms.TextBox();
             textBox11 = new System.Windows.Forms.TextBox();
             buttonBack = new System.Windows.Forms.Button();
+            buttonAddStudent = new System.Windows.Forms.Button();
+            textBox12 = new System.Windows.Forms.TextBox();
             SuspendLayout();
             // 
             // button1
@@ -233,7 +235,7 @@ namespace yazlab
             button3.Name = "button3";
             button3.Size = new System.Drawing.Size(110, 23);
             button3.TabIndex = 0;
-            button3.Text = "Atama Yap";
+            button3.Text = "Make Assignments";
             button3.UseVisualStyleBackColor = true;
             // 
             // label12
@@ -241,9 +243,9 @@ namespace yazlab
             label12.AutoSize = true;
             label12.Location = new System.Drawing.Point(121, 360);
             label12.Name = "label12";
-            label12.Size = new System.Drawing.Size(130, 15);
+            label12.Size = new System.Drawing.Size(99, 15);
             label12.TabIndex = 1;
-            label12.Text = "Otomatik Atama Ekranı";
+            label12.Text = "Auto Assignment";
             // 
             // button4
             // 
@@ -290,9 +292,9 @@ namespace yazlab
             label13.AutoSize = true;
             label13.Location = new System.Drawing.Point(354, 360);
             label13.Name = "label13";
-            label13.Size = new System.Drawing.Size(143, 15);
+            label13.Size = new System.Drawing.Size(167, 15);
             label13.TabIndex = 1;
-            label13.Text = "Otomatik Öğrenci Ekleme";
+            label13.Text = "Auto Create Random Students";
             // 
             // label20
             // 
@@ -347,12 +349,12 @@ namespace yazlab
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(69, 15);
             label15.TabIndex = 1;
-            label15.Text = "Course Add";
+            label15.Text = "Add Course";
             // 
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new System.Drawing.Point(593, 131);
+            comboBox1.Location = new System.Drawing.Point(590, 134);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new System.Drawing.Size(121, 23);
             comboBox1.TabIndex = 55;
@@ -414,7 +416,7 @@ namespace yazlab
             // 
             // textBox10
             // 
-            textBox10.Location = new System.Drawing.Point(593, 76);
+            textBox10.Location = new System.Drawing.Point(590, 76);
             textBox10.Name = "textBox10";
             textBox10.Size = new System.Drawing.Size(100, 23);
             textBox10.TabIndex = 2;
@@ -436,10 +438,29 @@ namespace yazlab
             buttonBack.UseVisualStyleBackColor = true;
             buttonBack.Click += buttonBack_Click;
             // 
+            // buttonAddStudent
+            // 
+            buttonAddStudent.Location = new System.Drawing.Point(422, 378);
+            buttonAddStudent.Name = "buttonAddStudent";
+            buttonAddStudent.Size = new System.Drawing.Size(110, 23);
+            buttonAddStudent.TabIndex = 59;
+            buttonAddStudent.Text = "Add Student";
+            buttonAddStudent.UseVisualStyleBackColor = true;
+            buttonAddStudent.Click += buttonAddStudent_Click;
+            // 
+            // textBox12
+            // 
+            textBox12.Location = new System.Drawing.Point(316, 378);
+            textBox12.Name = "textBox12";
+            textBox12.Size = new System.Drawing.Size(100, 23);
+            textBox12.TabIndex = 60;
+            // 
             // AdminUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(textBox12);
+            Controls.Add(buttonAddStudent);
             Controls.Add(buttonBack);
             Controls.Add(comboBox2);
             Controls.Add(comboBox3);
@@ -534,5 +555,7 @@ namespace yazlab
         private System.Windows.Forms.TextBox textBox10;
         private System.Windows.Forms.TextBox textBox11;
         private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Button buttonAddStudent;
+        private System.Windows.Forms.TextBox textBox12;
     }
 }

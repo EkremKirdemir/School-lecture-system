@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,29 +17,74 @@ namespace yazlab
         {
             InitializeComponent();
         }
+        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
+
         public bool VerifyLogin(string role, string username, string password)
         {
-            if (username == "" && password == "")
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                return false; // Username or password is empty, no need to check the database.
+            }
+
+            int userId = 0;
+            bool loginSuccess = false;
+
+            connection.Open();
+            try
+            {
+                string query = "";
+                if (role == "student")
+                {
+                    query = "SELECT student_id FROM students WHERE username = @username AND password = @password";
+                }
+                else if (role == "teacher")
+                {
+                    query = "SELECT identification_number FROM teachers WHERE username = @username AND password = @password";
+                }
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        userId = Convert.ToInt32(result);
+                        loginSuccess = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+            if (loginSuccess)
             {
                 if (role == "student")
                 {
-                    studentUserControl1.studentIdSet(49);
+                    studentUserControl1.studentIdSet(userId);
                     studentUserControl1.Visible = true;
                 }
                 else if (role == "teacher")
                 {
-                    teacherUserControl1.teacherIdSet(4);
-                    teacherUserControl1.Visible = true;              
+                    teacherUserControl1.teacherIdSet(userId);
+                    teacherUserControl1.Visible = true;
                 }
                 else if (role == "admin")
                 {
                     adminUserControl1.Visible = true;
                 }
-                return true;
             }
-            else
-                return false;
+
+            return loginSuccess;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             string role = radioButton1.Checked
