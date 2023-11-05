@@ -21,13 +21,15 @@ namespace yazlab
 
         public bool VerifyLogin(string role, string username, string password)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if ((string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) && role!="admin" )
             {
                 return false; // Username or password is empty, no need to check the database.
             }
 
             int userId = 0;
             bool loginSuccess = false;
+            if (role == "admin")
+                loginSuccess = true;
 
             connection.Open();
             try

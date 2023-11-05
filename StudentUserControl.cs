@@ -837,7 +837,7 @@ namespace yazlab
             buttonCancel.Enabled = false;
             buttonAcceptDemand.Enabled = false;
             buttonDemand.Enabled = false;
-            messagesTextBox.MaxLength = usercontroladmin.characterLimit();
+            messageTextBox.MaxLength = usercontroladmin.characterLimit();
         }
 
     }
