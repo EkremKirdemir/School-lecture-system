@@ -37,6 +37,7 @@ namespace yazlab
         NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
         List<double> gpaList = new List<double>();
         int studentid;
+        AdminUserControl usercontroladmin = new AdminUserControl();
         List<CourseData> SplitTranscript(string text)
         {
             List<CourseData> courseData = new List<CourseData>();
@@ -836,7 +837,7 @@ namespace yazlab
             buttonCancel.Enabled = false;
             buttonAcceptDemand.Enabled = false;
             buttonDemand.Enabled = false;
-
+            messagesTextBox.MaxLength = usercontroladmin.characterLimit();
         }
 
     }

@@ -32,6 +32,7 @@ namespace yazlab
         List<Rank> ranks = new List<Rank>();
         int teacherId;
         StudentUserControl usercontrol1 = new StudentUserControl();
+        AdminUserControl usercontroladmin = new AdminUserControl();
 
         void messageComboBoxUpdate()
         {
@@ -278,18 +279,17 @@ namespace yazlab
             {
                 for (int i = 0; i < ranks.Count - 1; i++)
                 {
-                    for (int j = 1; j < ranks.Count; j++)
+                    for (int j = i + 1; j < ranks.Count; j++)
                     {
                         if (ranks[i].Value < ranks[j].Value)
                         {
-                            List<Rank> temp = new List<Rank>();
-                            temp.Add(ranks[i]);
+                            Rank temp = ranks[i];
                             ranks[i] = ranks[j];
-                            ranks[j] = temp[0];
-                            temp.Clear();
+                            ranks[j] = temp;
                         }
                     }
                 }
+
                 for (int i = 0; i < ranks.Count; i++)
                 {
                     transcripListBox.Visible = true;
@@ -524,6 +524,7 @@ namespace yazlab
             teacherId = id;
             comboBoxUpdate();
             messageComboBoxUpdate();
+            messagesTextBox.MaxLength = usercontroladmin.characterLimit();
         }
 
         private void buttonCourseOptions_Click(object sender, EventArgs e)

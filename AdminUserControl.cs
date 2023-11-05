@@ -456,6 +456,18 @@ namespace yazlab
             }
             return transcript;
         }
+
+        int limit;
+        public int characterLimit()
+        {
+            return limit;
+        }
+        private void buttonLimit_Click(object sender, EventArgs e)
+        {
+            int.TryParse(textBoxLimit.Text, out limit);
+            if (!int.TryParse(textBoxLimit.Text, out limit))
+                MessageBox.Show("Please Enter A Number");
+        }
     }
     public class Student
     {

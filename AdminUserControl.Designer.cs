@@ -73,6 +73,8 @@ namespace yazlab
             buttonBack = new System.Windows.Forms.Button();
             buttonAddStudent = new System.Windows.Forms.Button();
             textBox12 = new System.Windows.Forms.TextBox();
+            buttonLimit = new System.Windows.Forms.Button();
+            textBoxLimit = new System.Windows.Forms.TextBox();
             SuspendLayout();
             // 
             // button1
@@ -455,10 +457,29 @@ namespace yazlab
             textBox12.Size = new System.Drawing.Size(100, 23);
             textBox12.TabIndex = 60;
             // 
+            // buttonLimit
+            // 
+            buttonLimit.Location = new System.Drawing.Point(562, 305);
+            buttonLimit.Name = "buttonLimit";
+            buttonLimit.Size = new System.Drawing.Size(149, 23);
+            buttonLimit.TabIndex = 61;
+            buttonLimit.Text = "Message Character Limit";
+            buttonLimit.UseVisualStyleBackColor = true;
+            buttonLimit.Click += buttonLimit_Click;
+            // 
+            // textBoxLimit
+            // 
+            textBoxLimit.Location = new System.Drawing.Point(590, 276);
+            textBoxLimit.Name = "textBoxLimit";
+            textBoxLimit.Size = new System.Drawing.Size(100, 23);
+            textBoxLimit.TabIndex = 62;
+            // 
             // AdminUserControl
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(textBoxLimit);
+            Controls.Add(buttonLimit);
             Controls.Add(textBox12);
             Controls.Add(buttonAddStudent);
             Controls.Add(buttonBack);
@@ -557,5 +578,7 @@ namespace yazlab
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Button buttonAddStudent;
         private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Button buttonLimit;
+        private System.Windows.Forms.TextBox textBoxLimit;
     }
 }
