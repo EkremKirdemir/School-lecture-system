@@ -465,8 +465,8 @@ namespace yazlab
 
             var newMessage = new
             {
-                StudentId = 48,
-                Message = messagesTextBox.Text.Trim(),
+                StudentId = (int)messageComboBox.SelectedValue,
+            Message = messagesTextBox.Text.Trim(),
                 Sent = 1
             };
 
@@ -632,7 +632,7 @@ namespace yazlab
                     var agreementStatus = JsonSerializer.Deserialize<List<Demand>>(agreementStatusJson);
 
                     var indexToUpdate = agreementStatus.FindIndex(d =>
-                        d.Demander == "student" &&
+                        d.Demander == demander &&
                         d.TeacherID == teacherId &&
                         d.DemandedCourseCode == demandedCourseCode &&
                         d.DemandedCourseName == demandedCourseName &&

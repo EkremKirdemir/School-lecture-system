@@ -13,9 +13,11 @@ namespace yazlab
 {
     public partial class Form1 : Form
     {
+       
         public Form1()
         {
             InitializeComponent();
+            studentUserControl1.teacher = teacherUserControl1;
         }
         NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
 
@@ -23,7 +25,7 @@ namespace yazlab
         {
             if ((string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) && role!="admin" )
             {
-                return false; // Username or password is empty, no need to check the database.
+                return false;
             }
 
             int userId = 0;

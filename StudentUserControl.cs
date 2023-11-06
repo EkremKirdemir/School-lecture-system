@@ -38,6 +38,7 @@ namespace yazlab
         List<double> gpaList = new List<double>();
         int studentid;
         AdminUserControl usercontroladmin = new AdminUserControl();
+        public TeacherUserControl teacher;
         List<CourseData> SplitTranscript(string text)
         {
             List<CourseData> courseData = new List<CourseData>();
@@ -258,7 +259,7 @@ namespace yazlab
             {
                 foreach (var demand in demands)
                 {
-                    if (demand.DemandStatus == "Demanded")
+                    if (demand.DemandStatus == "Demanded" && demand.Demander == "student")
                     {
                         string teacherDetails = GetTeacherNameSurnameById(demand.TeacherID);
                         string displayText = $"{demand.DemandedCourseCode} {demand.DemandedCourseName} {teacherDetails} {demand.DemandStatus}";
@@ -740,7 +741,42 @@ namespace yazlab
 
         private void buttonAcceptDemand_Click(object sender, EventArgs e)
         {
+            List<object> itemsToRemove = new List<object>();
+            foreach (object item in checkedListBox1.CheckedItems)
+            {
+                string itemText = item.ToString();
+                string[] parts = itemText.Split(new char[] { ' ' }, 7);
+                if (parts.Length < 4) continue;
+                string  name = parts[2];
+                string courseCode = parts[0];
+                string courseName = parts[1];
+                string surname = parts[3];
+                int teacherId = -1;
+                connection.Open();
+                string sqlQuery = "SELECT identification_number FROM teachers WHERE name = @teacher_name AND surname=@teacher_surname";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sqlQuery, connection))
+                {
+                    cmd.Parameters.AddWithValue("@teacher_name", name);
+                    cmd.Parameters.AddWithValue("@teacher_surname", surname);
+                    using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            teacherId = Int32.Parse(reader["identification_number"].ToString());
+                        }
+                    }
+                }
+                connection.Close();
 
+                if (teacherId == -1) continue;
+
+                teacher.UpdateDemanderStatus(teacherId, courseCode, courseName, studentid, "teacher", "Approved");
+                itemsToRemove.Add(item);
+            }
+            foreach (var item in itemsToRemove)
+            {
+                checkedListBox1.Items.Remove(item);
+            }
         }
         private void getinterest_area()
         {

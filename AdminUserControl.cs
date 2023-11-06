@@ -25,7 +25,6 @@ namespace yazlab
         }
         private void button4_Click(object sender, EventArgs e)
         {
-
             connection.Open();
             int studentIdToDelete = (int)comboBox3.SelectedValue;
 
@@ -34,7 +33,6 @@ namespace yazlab
             komut1.ExecuteNonQuery();
             connection.Close();
             comboBoxUpdate();
-
         }
         int x = 0;
         NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
