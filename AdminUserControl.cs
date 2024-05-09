@@ -35,7 +35,7 @@ namespace yazlab
             comboBoxUpdate();
         }
         int x = 0;
-        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
+        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=;");
         private void button1_Click(object sender, EventArgs e)
         {
             connection.Open();
