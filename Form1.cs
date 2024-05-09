@@ -19,7 +19,7 @@ namespace yazlab
             InitializeComponent();
             studentUserControl1.teacher = teacherUserControl1;
         }
-        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
+        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=;");
 
         public bool VerifyLogin(string role, string username, string password)
         {
