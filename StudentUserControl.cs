@@ -34,7 +34,7 @@ namespace yazlab
         {
 
         }
-        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=14441903;");
+        NpgsqlConnection connection = new NpgsqlConnection("Server=localhost; Port=5432; Database=yazlab; User Id=postgres; Password=;");
         List<double> gpaList = new List<double>();
         int studentid;
         AdminUserControl usercontroladmin = new AdminUserControl();
